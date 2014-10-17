@@ -1,3 +1,8 @@
 language: cpp
 before_install: sudo apt-get install python
-script: tools/analyse.sh
+script: cd tools; chmod +x analyse.sh; ./analyse.sh
+
+# whitelist
+branches:
+  only:
+    - master
