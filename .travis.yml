@@ -1,0 +1,3 @@
+language: cpp
+before_install: sudo apt-get install python
+script: ../tools/analyse.sh
