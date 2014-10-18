@@ -40,6 +40,7 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../port/context_ISR.cpp \
 ../src/main.cpp
 
 
@@ -50,15 +51,19 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+port/context_ISR.o \
 src/main.o
 
 OBJS_AS_ARGS +=  \
+port/context_ISR.o \
 src/main.o
 
 C_DEPS +=  \
+port/context_ISR.d \
 src/main.d
 
 C_DEPS_AS_ARGS +=  \
+port/context_ISR.d \
 src/main.d
 
 OUTPUT_FILE_PATH +=EiTOS.elf
@@ -74,6 +79,15 @@ LIB_DEP+=
 # AVR32/GNU C Compiler
 
 
+
+
+
+port/%.o: ../port/%.cpp
+	@echo Building file: $<
+	@echo Invoking: AVR8/GNU C Compiler : 4.8.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1056\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega644p -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
 
 src/%.o: ../src/%.cpp
 	@echo Building file: $<
