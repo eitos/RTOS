@@ -6,10 +6,16 @@
  */ 
 
 #include "../src/include/context_ISR.hpp"
+#include "../src/include/StackStructure.hpp"
 #include <avr/interrupt.h>
 
 uint16_t TaskStack;
+
+uint16_t ten_drugi; // TP ONLY
+
 uint16_t* TaskStackPointer=&TaskStack;
+
+uint8_t task_no_set=2;
 
 #define ContextSave()																					\
 	asm volatile(	"push r0						; save r0 on stack							\n\t"	\
@@ -99,6 +105,45 @@ uint16_t* TaskStackPointer=&TaskStack;
 					"pop r0							; ...finally restore r0							\n\t"	\
 	)
 
+void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart){
+	uint8_t* RamPtr = (uint8_t*) TaskStackStart;
+	*(RamPtr-RETI_ADDR_HI ) = ((uint16_t)Task)>>8;
+	*(RamPtr-RETI_ADDR_LOW) = ((uint16_t)Task);
+	*(RamPtr-SREG_C) = (1<<7); // Set I-bit in order to have interrupts enabled
+	*(RamPtr-R0_C) = 0;
+	*(RamPtr-R1_C) = 0;
+	*(RamPtr-R2_C) = 0;
+	*(RamPtr-R3_C) = 0;
+	*(RamPtr-R4_C) = 0;
+	*(RamPtr-R5_C) = 0;
+	*(RamPtr-R6_C) = 0;
+	*(RamPtr-R7_C) = 0;
+	*(RamPtr-R8_C) = 0;
+	*(RamPtr-R9_C) = 0;
+	*(RamPtr-R10_C) = 0;
+	*(RamPtr-R11_C) = 0;
+	*(RamPtr-R12_C) = 0;
+	*(RamPtr-R13_C) = 0;
+	*(RamPtr-R14_C) = 0;
+	*(RamPtr-R15_C) = 0;
+	*(RamPtr-R16_C) = 0;
+	*(RamPtr-R17_C) = 0;
+	*(RamPtr-R18_C) = 0;
+	*(RamPtr-R19_C) = 0;
+	*(RamPtr-R20_C) = 0;
+	*(RamPtr-R21_C) = 0;
+	*(RamPtr-R22_C) = 0;
+	*(RamPtr-R23_C) = 0;
+	*(RamPtr-R24_C) = 0;
+	*(RamPtr-R25_C) = 0;
+	*(RamPtr-R26_C) = 0;
+	*(RamPtr-R27_C) = 0;
+	*(RamPtr-R28_C) = 0;
+	*(RamPtr-R29_C) = 0;
+	*(RamPtr-R30_C) = 0;
+	*(RamPtr-R31_C) = 0;
+}
+
 void OsInit(){
 	TCCR0A = (1<<WGM01); // CTC
 	OCR0A  = 250-1; // 1 kHz
@@ -109,8 +154,21 @@ void OsInit(){
 
 ISR(TIMER0_COMPA_vect,ISR_NAKED){
 	ContextSave();
-	// some code - ex change tasks
-	// ??warning - allocating too much local variables do can destroy stack of some taks??
+	
+	// TP ONLY BEGIN
+	if(task_no_set==2){
+		TaskStack=0x1000-STACK_HEAP;
+		task_no_set=1;
+	}else if(task_no_set==1){
+		ten_drugi=TaskStack;
+		TaskStack=0x0F9C-STACK_HEAP;
+		task_no_set=0;
+	}else{
+		uint16_t temp=TaskStack;
+		TaskStack=ten_drugi;
+		ten_drugi=temp;
+	}
+	// TP ONLY END
 	ContextRestore();
 	asm volatile("reti");
 }

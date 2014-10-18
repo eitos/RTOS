@@ -145,6 +145,9 @@
     <Compile Include="src\include\context_ISR.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\include\StackStructure.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\main.cpp">
       <SubType>compile</SubType>
     </Compile>

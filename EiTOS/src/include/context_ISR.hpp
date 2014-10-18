@@ -10,10 +10,18 @@
 	#include <inttypes.h>
 	extern uint16_t TaskStack;
 
-	typedef void ( * TaskType )();
+	typedef void ( * TaskFunctionType )();
+	
+	typedef enum {RUNNING, IDLE} TaskStateType;
+	typedef enum {LOW, MEDIUM, HIGH} TaskPriorityType;
+	typedef struct {
+		TaskStateType State;
+		TaskPriorityType Priority;
+		uint16_t StackStart;
+		}TaskType;
 
 	void OsInit();
 
-	//void TaskCreate(TaskType Task, uint16_t);
+	void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart);
 	
 #endif
