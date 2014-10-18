@@ -15,7 +15,7 @@ uint16_t ten_drugi; // TP ONLY
 
 uint16_t* TaskStackPointer=&TaskStack;
 
-uint8_t task_no_set=2;
+uint8_t task_no_set=2; // TP ONLY
 
 #define ContextSave()																					\
 	asm volatile(	"push r0						; save r0 on stack							\n\t"	\
@@ -169,6 +169,7 @@ ISR(TIMER0_COMPA_vect,ISR_NAKED){
 		ten_drugi=temp;
 	}
 	// TP ONLY END
+	
 	ContextRestore();
 	asm volatile("reti");
 }
