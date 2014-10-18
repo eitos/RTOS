@@ -189,7 +189,7 @@ _ERROR_CATEGORIES = [
   'build/namespaces',
   'build/printf_format',
   'build/storage_class',
-  #'legal/copyright',
+  'legal/copyright',
   'readability/alt_tokens',
   'readability/braces',
   'readability/casting',
@@ -1616,7 +1616,6 @@ def CheckForCopyright(filename, lines, error):
 
   # We'll say it should occur by line 10. Don't forget there's a
   # dummy line at the front.
-  return
   for line in xrange(1, min(len(lines), 11)):
     if re.search(r'Copyright', lines[line], re.I): break
   else:                       # means no copyright line was found
