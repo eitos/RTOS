@@ -12,7 +12,7 @@
 	#define RETI_ADDR_LOW	0
 	#define RETI_ADDR_HI	1
 	#define R0_C			2
-	#define SREG_C			3
+	#define SREG_CP			3
 	#define R1_C			4
 	#define R2_C			5
 	#define R3_C			6

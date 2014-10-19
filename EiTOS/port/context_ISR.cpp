@@ -4,18 +4,20 @@
  * Created: 2014-10-18 14:39:54
  *  Author: Piotr
  */ 
-
+#include <avr/interrupt.h>
 #include "../src/include/context_ISR.hpp"
 #include "../src/include/StackStructure.hpp"
-#include <avr/interrupt.h>
+
 
 uint16_t TaskStack;
 
-uint16_t ten_drugi; // TP ONLY
+uint16_t ten_drugi;  // TP ONLY
 
 uint16_t* TaskStackPointer=&TaskStack;
 
-uint8_t task_no_set=2; // TP ONLY
+uint8_t task_no_set = 2;  // TP ONLY
+
+void ContextSave() __attribute__((naked));
 
 #define ContextSave()																					\
 	asm volatile(	"push r0						; save r0 on stack							\n\t"	\
@@ -105,11 +107,11 @@ uint8_t task_no_set=2; // TP ONLY
 					"pop r0							; ...finally restore r0							\n\t"	\
 	)
 
-void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart){
-	uint8_t* RamPtr = (uint8_t*) TaskStackStart;
-	*(RamPtr-RETI_ADDR_HI ) = ((uint16_t)Task)>>8;
+void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart) {
+	uint8_t* RamPtr = (uint8_t*)TaskStackStart;
+	*(RamPtr-RETI_ADDR_HI) = ((uint16_t)Task)>>8;
 	*(RamPtr-RETI_ADDR_LOW) = ((uint16_t)Task);
-	*(RamPtr-SREG_C) = (1<<7); // Set I-bit in order to have interrupts enabled
+	*(RamPtr-SREG_CP) = (1<<7);  // Set I-bit in order to have interrupts enabled
 	*(RamPtr-R0_C) = 0;
 	*(RamPtr-R1_C) = 0;
 	*(RamPtr-R2_C) = 0;
@@ -144,32 +146,32 @@ void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart){
 	*(RamPtr-R31_C) = 0;
 }
 
-void OsInit(){
-	TCCR0A = (1<<WGM01); // CTC
-	OCR0A  = 250-1; // 1 kHz
-	TCCR0B = (1<<CS00)|(1<<CS01); // presc 64
-	TIMSK0 = (1<<OCIE0A);
-	sei();	
+void OsInit() {
+	TCCR0A = (1 << WGM01);  // CTC
+	OCR0A  = 250-1;  // 1 kHz
+	TCCR0B = (1 << CS00)|(1 << CS01);  // presc 64
+	TIMSK0 = (1 << OCIE0A);
+	sei();
 }
 
-ISR(TIMER0_COMPA_vect,ISR_NAKED){
+ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	ContextSave();
-	
+
 	// TP ONLY BEGIN
-	if(task_no_set==2){
-		TaskStack=0x1000-STACK_HEAP;
-		task_no_set=1;
-	}else if(task_no_set==1){
-		ten_drugi=TaskStack;
-		TaskStack=0x0F9C-STACK_HEAP;
-		task_no_set=0;
-	}else{
-		uint16_t temp=TaskStack;
-		TaskStack=ten_drugi;
-		ten_drugi=temp;
+	if(task_no_set == 2) {
+		TaskStack = 0x1000-STACK_HEAP;
+		task_no_set = 1;
+	} else if (task_no_set == 1) {
+		ten_drugi = TaskStack;
+		TaskStack = 0x0F9C-STACK_HEAP;
+		task_no_set = 0;
+	} else {
+		uint16_t temp = TaskStack;
+		TaskStack = ten_drugi;
+		ten_drugi = temp;
 	}
 	// TP ONLY END
-	
+
 	ContextRestore();
 	asm volatile("reti");
 }
