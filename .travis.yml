@@ -1,6 +1,6 @@
 language: cpp
 before_install: sudo apt-get install python
-script: cd tools; chmod +x analyse.sh; ./analyse.sh
+script: cd tools; chmod +x check_all.sh; ./check_all.sh
 
 # whitelist
 branches:
