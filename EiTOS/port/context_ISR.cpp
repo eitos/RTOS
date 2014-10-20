@@ -174,6 +174,10 @@ void SwitchContextInISR(volatile TaskLowLevelType* Current,
 		Next->TaskExecution = TASK_EXECUTED;
 }
 
+void TriggerSysTick() {
+	TCNT0 = OCR0A-1;
+}
+
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	ContextSave();
 	StackRamEnd();

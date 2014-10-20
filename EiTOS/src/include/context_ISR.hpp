@@ -31,4 +31,6 @@
 
 	void SwitchContextInISR(TaskLowLevelType* Current, TaskLowLevelType* Next);
 
+	void TriggerSysTick();
+
 #endif
