@@ -117,7 +117,7 @@ inline void __attribute__((always_inline)) StackRamEnd() {
 	);
 }
 
-void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart) {
+uint16_t TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart) {
 	uint8_t* RamPtr = (uint8_t*)TaskStackStart;
 	*(RamPtr-RETI_ADDR_HI) = ((uint16_t)Task) >> 8;
 	*(RamPtr-RETI_ADDR_LOW) = ((uint16_t)Task);
@@ -154,6 +154,8 @@ void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart) {
 	*(RamPtr-R29_C) = 0;
 	*(RamPtr-R30_C) = 0;
 	*(RamPtr-R31_C) = 0;
+
+	return TaskStackStart-STACK_HEAP;
 }
 
 void OsInit() {
@@ -164,22 +166,21 @@ void OsInit() {
 	sei();
 }
 
+void SwitchContextInISR(volatile TaskLowLevelType* Current,
+		volatile TaskLowLevelType* Next) {
+	if(Current->TaskExecution == TASK_EXECUTED) Current->StackStart = TaskStack;
+	TaskStack = Next->StackStart;
+	if(Next->TaskExecution == TASK_NOT_EXECUTED)
+		Next->TaskExecution = TASK_EXECUTED;
+}
+
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	ContextSave();
 	StackRamEnd();
+
 	// TP ONLY BEGIN
-	if(task_no_set == 2) {
-		TaskStack = 0x1000-STACK_HEAP;
-		task_no_set = 1;
-	} else if (task_no_set == 1) {
-		ten_drugi = TaskStack;
-		TaskStack = 0x0F9C-STACK_HEAP;
-		task_no_set = 0;
-	} else {
-		uint16_t temp = TaskStack;
-		TaskStack = ten_drugi;
-		ten_drugi = temp;
-	}
+	SwitchContextInISR(&TaskList[CurrentProc], &TaskList[!CurrentProc]);
+	CurrentProc=!CurrentProc;
 	// TP ONLY END
 
 	ContextRestore();

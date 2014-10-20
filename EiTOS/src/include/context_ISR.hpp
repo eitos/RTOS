@@ -9,23 +9,26 @@
 
 	#include <inttypes.h>
 
-	#define RAMEND_LOW (RAMEND%8)
-	#define RAMEND_HIGH (RAMEND>>8)
-
 	extern uint16_t TaskStack;
 
 	typedef void ( * TaskFunctionType )();
 
-	typedef enum {RUNNING, IDLE} TaskStateType;
-	typedef enum {LOW, MEDIUM, HIGH} TaskPriorityType;
+	typedef enum {TASK_NOT_EXECUTED, TASK_EXECUTED} TaskExecutionLowLevelType;
+
 	typedef struct {
-		TaskStateType State;
-		TaskPriorityType Priority;
 		uint16_t StackStart;
-		}TaskType;
+		TaskExecutionLowLevelType TaskExecution;
+	}TaskLowLevelType;
+
+	// TP ONLY BEGIN
+	extern volatile TaskLowLevelType TaskList[2];
+	extern volatile uint8_t CurrentProc;
+	// TP ONLY END
 
 	void OsInit();
 
-	void TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart);
+	uint16_t TaskAllocate(TaskFunctionType Task, uint16_t TaskStackStart);
+
+	void SwitchContextInISR(TaskLowLevelType* Current, TaskLowLevelType* Next);
 
 #endif

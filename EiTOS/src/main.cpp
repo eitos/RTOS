@@ -9,6 +9,9 @@
 #include "include/context_ISR.hpp"
 
 // TP ONLY BEGIN
+volatile TaskLowLevelType TaskList[2];
+volatile uint8_t CurrentProc = 0;
+
 void Task1() {
 	while(1) {
 		PORTB ^= (1 << PB2);
@@ -28,8 +31,10 @@ int main() {
 	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2);
 
 	// TP ONLY BEGIN
-	TaskAllocate(&Task1, 0x1000);
-	TaskAllocate(&Task2, 0x0F9C);
+	TaskList[0].StackStart = TaskAllocate(&Task1, 0x1000);
+	TaskList[0].TaskExecution = TASK_NOT_EXECUTED;
+	TaskList[1].StackStart = TaskAllocate(&Task2, 0x0F9C);
+	TaskList[1].TaskExecution = TASK_NOT_EXECUTED;
 	// TP ONLY END
 
 	OsInit();
