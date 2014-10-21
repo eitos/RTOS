@@ -9,11 +9,9 @@
 #include "StackStructure.hpp"
 
 
-uint16_t CurrentTaskStackAdress;
+uint8_t* CurrentTaskStackAdress;
 
-uint16_t ten_drugi;  // TP ONLY
-
-uint8_t task_no_set = 2;  // TP ONLY
+uint8_t started = 0;  // TP ONLY
 
 inline void __attribute__((always_inline)) ContextSave() {
 	asm volatile("push r0			\n\t"  // save r0 on stack	
@@ -116,46 +114,43 @@ inline void __attribute__((always_inline)) SwitchToOsStack() {
 	);
 }
 
-uint16_t TaskAllocate(TaskFunction_t Task, uint16_t TaskStackStart) {
-	// convert number to a pointer for ram accessing
-	uint8_t* RamPtr = (uint8_t*)TaskStackStart;
-	// split address of the function into 8-bit groups
-	// in order to create valid return address
-	*(RamPtr-RETI_ADDR_HI) = ((uint16_t)Task) >> 8;
-	*(RamPtr-RETI_ADDR_LOW) = ((uint16_t)Task);
-	*(RamPtr-SREG_CP) = (1 << 7);  // Set I-bit in order to have interrupts enabled
-	*(RamPtr-R0_C) = 0;
-	*(RamPtr-R1_C) = 0;
-	*(RamPtr-R2_C) = 0;
-	*(RamPtr-R3_C) = 0;
-	*(RamPtr-R4_C) = 0;
-	*(RamPtr-R5_C) = 0;
-	*(RamPtr-R6_C) = 0;
-	*(RamPtr-R7_C) = 0;
-	*(RamPtr-R8_C) = 0;
-	*(RamPtr-R9_C) = 0;
-	*(RamPtr-R10_C) = 0;
-	*(RamPtr-R11_C) = 0;
-	*(RamPtr-R12_C) = 0;
-	*(RamPtr-R13_C) = 0;
-	*(RamPtr-R14_C) = 0;
-	*(RamPtr-R15_C) = 0;
-	*(RamPtr-R16_C) = 0;
-	*(RamPtr-R17_C) = 0;
-	*(RamPtr-R18_C) = 0;
-	*(RamPtr-R19_C) = 0;
-	*(RamPtr-R20_C) = 0;
-	*(RamPtr-R21_C) = 0;
-	*(RamPtr-R22_C) = 0;
-	*(RamPtr-R23_C) = 0;
-	*(RamPtr-R24_C) = 0;
-	*(RamPtr-R25_C) = 0;
-	*(RamPtr-R26_C) = 0;
-	*(RamPtr-R27_C) = 0;
-	*(RamPtr-R28_C) = 0;
-	*(RamPtr-R29_C) = 0;
-	*(RamPtr-R30_C) = 0;
-	*(RamPtr-R31_C) = 0;
+uint8_t* TaskAllocate(TaskHandler_t Task, uint8_t* TaskStackStart) {
+	*(TaskStackStart-RETI_ADDR_HI) = ((uint16_t)Task) >> 8;
+	*(TaskStackStart-RETI_ADDR_LOW) = ((uint16_t)Task);
+	// Set I-bit in order to have interrupts enabled
+	*(TaskStackStart-SREG_CP) = (1 << 7);
+	*(TaskStackStart-R0_C) = 0;
+	*(TaskStackStart-R1_C) = 0;
+	*(TaskStackStart-R2_C) = 0;
+	*(TaskStackStart-R3_C) = 0;
+	*(TaskStackStart-R4_C) = 0;
+	*(TaskStackStart-R5_C) = 0;
+	*(TaskStackStart-R6_C) = 0;
+	*(TaskStackStart-R7_C) = 0;
+	*(TaskStackStart-R8_C) = 0;
+	*(TaskStackStart-R9_C) = 0;
+	*(TaskStackStart-R10_C) = 0;
+	*(TaskStackStart-R11_C) = 0;
+	*(TaskStackStart-R12_C) = 0;
+	*(TaskStackStart-R13_C) = 0;
+	*(TaskStackStart-R14_C) = 0;
+	*(TaskStackStart-R15_C) = 0;
+	*(TaskStackStart-R16_C) = 0;
+	*(TaskStackStart-R17_C) = 0;
+	*(TaskStackStart-R18_C) = 0;
+	*(TaskStackStart-R19_C) = 0;
+	*(TaskStackStart-R20_C) = 0;
+	*(TaskStackStart-R21_C) = 0;
+	*(TaskStackStart-R22_C) = 0;
+	*(TaskStackStart-R23_C) = 0;
+	*(TaskStackStart-R24_C) = 0;
+	*(TaskStackStart-R25_C) = 0;
+	*(TaskStackStart-R26_C) = 0;
+	*(TaskStackStart-R27_C) = 0;
+	*(TaskStackStart-R28_C) = 0;
+	*(TaskStackStart-R29_C) = 0;
+	*(TaskStackStart-R30_C) = 0;
+	*(TaskStackStart-R31_C) = 0;
 
 	return TaskStackStart-STACK_HEAP;  // return address of stack heap in ram copy
 }
@@ -168,12 +163,12 @@ void OsInit() {
 	sei();
 }
 
-void SwitchContextInISR(TaskLowLevel_t &Current, TaskLowLevel_t &Next) {
-	if(Current.TaskExecution == TASK_EXECUTED)
-		Current.StackStart = CurrentTaskStackAdress;
+void ContextGet(TaskLowLevel_t* Current) {
+	Current->StackStart = CurrentTaskStackAdress;
+}
+
+void ContextSet(const TaskLowLevel_t &Next) {
 	CurrentTaskStackAdress = Next.StackStart;
-	if(Next.TaskExecution == TASK_NOT_EXECUTED)
-		Next.TaskExecution = TASK_EXECUTED;
 }
 
 void TriggerSysTick() {
@@ -185,8 +180,15 @@ ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	SwitchToOsStack();
 
 	// TP ONLY BEGIN
-	SwitchContextInISR(TaskList[CurrentProc], TaskList[!CurrentProc]);
-	CurrentProc=!CurrentProc;
+	if(started == 0) {
+		started = 1;
+		ContextSet(TaskList[CurrentProc]);
+	} else {
+		ContextGet(&TaskList[CurrentProc]);
+		CurrentProc++;
+		if(CurrentProc > 2) CurrentProc = 0;
+		ContextSet(TaskList[CurrentProc]);
+	}
 	// TP ONLY END
 
 	ContextRestore();
