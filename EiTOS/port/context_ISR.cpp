@@ -167,8 +167,8 @@ void ContextGet(TaskLowLevel_t* Current) {
 	Current->StackStart = CurrentTaskStackAdress;
 }
 
-void ContextSet(const TaskLowLevel_t &Next) {
-	CurrentTaskStackAdress = Next.StackStart;
+void ContextSet(TaskLowLevel_t *Next) {
+	CurrentTaskStackAdress = Next->StackStart;
 }
 
 void TriggerSysTick() {
@@ -182,12 +182,12 @@ ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	// TP ONLY BEGIN
 	if(started == 0) {
 		started = 1;
-		ContextSet(TaskList[CurrentProc]);
+		ContextSet(&TaskList[CurrentProc]);
 	} else {
 		ContextGet(&TaskList[CurrentProc]);
 		CurrentProc++;
 		if(CurrentProc > 2) CurrentProc = 0;
-		ContextSet(TaskList[CurrentProc]);
+		ContextSet(&TaskList[CurrentProc]);
 	}
 	// TP ONLY END
 

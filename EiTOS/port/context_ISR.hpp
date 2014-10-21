@@ -28,7 +28,7 @@ uint8_t* TaskAllocate(TaskHandler_t Task, uint8_t* TaskStackStart);
 
 void ContextGet(TaskLowLevel_t* Current);
 
-void ContextSet(const TaskLowLevel_t &Next);
+void ContextSet(TaskLowLevel_t* Next);
 
 void TriggerSysTick();
 
