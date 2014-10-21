@@ -51,7 +51,8 @@ inline void __attribute__((always_inline)) ContextSave() {
 	"push r29						\n\t"
 	"push r30						\n\t"
 	"push r31						\n\t");
-	//operand passing will automatically load the address into X register pairs (R27 & R26)
+	// operand passing will automatically load the address
+	// into X register pairs (R27 & R26)
 	asm volatile(
 	"in r0, __SP_L__				\n\t"  // load Stack Pointer (LOW) to temp_reg (r0)
 	"st x+, r0						\n\t"  // save one byte (half-pointer) at address stored in X & post increment X
@@ -64,7 +65,8 @@ inline void __attribute__((always_inline)) ContextSave() {
 
 
 inline void __attribute__((always_inline)) ContextRestore() {
-	//operand passing will automatically load the address into X register pairs (R27 & R26)
+	// operand passing will automatically load the address
+	// into X register pairs (R27 & R26)
 	asm volatile("ld r0, x+								\n\t"  // read one byte (half-pointer) from address stored in X & post increment X	
 	"out __SP_L__, r0						\n\t"  // set Stack Pointer (LOW) to value of temp_reg (r0)
 	"ld r0, x+								\n\t"  // read one byte (half-pointer) from address stored in X & post increment X
@@ -115,9 +117,12 @@ inline void __attribute__((always_inline)) SwitchToOsStack() {
 }
 
 uint16_t TaskAllocate(TaskFunction_t Task, uint16_t TaskStackStart) {
-	uint8_t* RamPtr = (uint8_t*)TaskStackStart;  // convert number to a pointer for ram accessing
-	*(RamPtr-RETI_ADDR_HI) = ((uint16_t)Task) >> 8;  // split address of the function into 8-bit groups
-	*(RamPtr-RETI_ADDR_LOW) = ((uint16_t)Task);  // in order to create valid return address
+	// convert number to a pointer for ram accessing
+	uint8_t* RamPtr = (uint8_t*)TaskStackStart;
+	// split address of the function into 8-bit groups
+	// in order to create valid return address
+	*(RamPtr-RETI_ADDR_HI) = ((uint16_t)Task) >> 8;
+	*(RamPtr-RETI_ADDR_LOW) = ((uint16_t)Task);
 	*(RamPtr-SREG_CP) = (1 << 7);  // Set I-bit in order to have interrupts enabled
 	*(RamPtr-R0_C) = 0;
 	*(RamPtr-R1_C) = 0;
@@ -164,7 +169,8 @@ void OsInit() {
 }
 
 void SwitchContextInISR(TaskLowLevel_t &Current, TaskLowLevel_t &Next) {
-	if(Current.TaskExecution == TASK_EXECUTED) Current.StackStart = CurrentTaskStackAdress;
+	if(Current.TaskExecution == TASK_EXECUTED)
+		Current.StackStart = CurrentTaskStackAdress;
 	CurrentTaskStackAdress = Next.StackStart;
 	if(Next.TaskExecution == TASK_NOT_EXECUTED)
 		Next.TaskExecution = TASK_EXECUTED;
