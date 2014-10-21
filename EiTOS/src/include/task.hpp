@@ -7,7 +7,7 @@
 class TaskStruct_t : TaskLowLevel_t {
  public:
     int val, id;
-    uint8_t Norm() {
+    uint8_t Norm() const {
         return this->val;
     }
  private:
