@@ -8,14 +8,9 @@
 #define CONTEXT_ISR_HPP
 
 #include <inttypes.h>
+#include "port/TaskLowLevel.hpp"
 
 extern uint8_t* CurrentTaskStackAdress;
-
-typedef void ( * TaskHandler_t )();
-
-typedef struct {
-	uint8_t* StackStart;
-}TaskLowLevel_t;
 
 // TP ONLY BEGIN
 extern TaskLowLevel_t TaskList[];
@@ -31,5 +26,7 @@ void ContextGet(TaskLowLevel_t* Current);
 void ContextSet(TaskLowLevel_t* Next);
 
 void TriggerSysTick();
+
+void ResetSysTick();
 
 #endif

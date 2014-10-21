@@ -175,6 +175,10 @@ void TriggerSysTick() {
 	TCNT0 = OCR0A-1;
 }
 
+void ResetSysTick() {
+	TCNT0 = 0;
+}
+
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	ContextSave();
 	SwitchToOsStack();
