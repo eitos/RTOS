@@ -142,10 +142,10 @@
     <Compile Include="port\context_ISR.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\include\context_ISR.hpp">
+    <Compile Include="port\context_ISR.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\include\StackStructure.hpp">
+    <Compile Include="port\StackStructure.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\main.cpp">

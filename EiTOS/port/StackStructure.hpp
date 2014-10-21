@@ -46,6 +46,4 @@
 	#define R31_C			34
 	#define STACK_HEAP		35
 
-
-
 #endif /* STACKSTRUCTURE_HPP_ */

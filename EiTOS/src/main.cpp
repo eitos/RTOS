@@ -6,10 +6,10 @@
  */ 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "include/context_ISR.hpp"
+#include "../port/context_ISR.hpp"
 
 // TP ONLY BEGIN
-volatile TaskLowLevelType TaskList[2];
+TaskLowLevel_t TaskList[2];
 volatile uint8_t CurrentProc = 0;
 
 void Task1() {
