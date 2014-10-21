@@ -28,4 +28,4 @@
 *.app
 
 
-RTOS/EiTOS/Debug
+EiTOS/Debug/
