@@ -4,27 +4,14 @@
 #include "port/TaskLowLevel.hpp"
 #include "EiTOSConfig.hpp"
 
-class TaskStruct_t : TaskLowLevel_t {
+class TaskStruct_t {
  public:
+	TaskLowLevel_t lowLevelProperties;
     int val, id;
     uint8_t Norm() const {
         return this->val;
     }
  private:
-};
-
-
-class SchedulerQueue_t {
- private:
-    TaskStruct_t TaskList[TaskQueueSize];
-    uint8_t ActualSize;
- public:
-	SchedulerQueue_t();
-    void init();
-    uint8_t size();
-    void push(const TaskStruct_t & task);
-    TaskStruct_t & front();
-    void pop();
 };
 
 #endif

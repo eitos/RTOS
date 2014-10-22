@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "EiTOS/src/include/task.hpp"
+#include "EiTOS/src/include/schedulerQueue.hpp"
 #include "gtest/gtest.h"
 
 

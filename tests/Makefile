@@ -1,6 +1,6 @@
-MAIN_DIR = ../
+MAIN_DIR = ../EiTOS
 GTEST_DIR = gtest-1.7.0
-SOURCES  = ../EiTOS/src/Task.cpp
+SOURCES  = $(MAIN_DIR)/src/Task.cpp $(MAIN_DIR)/src/schedulerQueue.cpp
 TESTS = tests_run_all.cpp scheduler.cpp
 
 PORT_INCLUDE = ../EiTOS/ports/mock/
@@ -17,4 +17,4 @@ test:
 	./test
 
 clean:
-	rm test
+	rm -f test
