@@ -12,9 +12,23 @@ LIBS = -lgtest
 CXX = g++
 CXXFLAGS = -g
 
-test:
+all: download test clean
+
+download:
+	wget https://googletest.googlecode.com/files/gtest-1.7.0.zip
+	unzip  gtest-1.7.0.zip
+	cd gtest-1.7.0; \
+	./configure; \
+	make
+	rm -Rf gtest-1.7.0.zip
+
+test:	
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(SOURCES) $(TESTS) $(LIBS) -o test
 	./test
 
 clean:
 	rm -f test
+	rm -Rf gtest-1.7.0
+	rm -Rf gtest-1.7.0.zip*
+
+
