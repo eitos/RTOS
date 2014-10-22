@@ -10,16 +10,17 @@ uint8_t SchedulerQueue_t::size() {
 }
 
 void SchedulerQueue_t::push(const TaskStruct_t & task) {
-    int8_t InsertionPosition = -1;
+	const int8_t LastPosition = this->size();
+    int8_t InsertionPosition = LastPosition;
     for (int8_t i = 0; i < this->size(); ++i) {
         if ( this->TaskList[i].Norm() >= task.Norm() ) {
             InsertionPosition = i;
             break;
         }
     }
-    if ( InsertionPosition == -1 ) {
+    /*if ( InsertionPosition == LastPosition ) {
         InsertionPosition = this->size();
-    }
+    }*/
     for (int8_t i = this->size()-1; i >= InsertionPosition; --i) {
         this->TaskList[i+1] = this->TaskList[i];
     }

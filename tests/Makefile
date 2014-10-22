@@ -7,15 +7,16 @@ PORT_INCLUDE = ../EiTOS/ports/mock/
 INCLUDES = -I$(GTEST_DIR)/include -I$(PORT_INCLUDE) -I../EiTOS/include -I..
 
 LIBS_FOLDERS = -L$(GTEST_DIR)/lib/.libs
-LIBS = -lgtest
+GTEST_LIBS = $(GTEST_DIR)/lib/.libs/libgtest.a
+LIBS = -pthread -lgtest
 
 CXX = g++
-CXXFLAGS = -g
+CXXFLAGS = -g --static
 
-all: download test clean
+all: bootstrap test clean
 
-download:
-	wget https://googletest.googlecode.com/files/gtest-1.7.0.zip
+bootstrap:
+	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip
 	unzip  gtest-1.7.0.zip
 	cd gtest-1.7.0; \
 	./configure; \
@@ -23,7 +24,7 @@ download:
 	rm -Rf gtest-1.7.0.zip
 
 test:	
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(SOURCES) $(TESTS) $(LIBS) -o test
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(GTEST_LIBS) $(SOURCES) $(TESTS) -o test $(LIBS)
 	./test
 
 clean:
