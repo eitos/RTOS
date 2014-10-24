@@ -5,10 +5,10 @@
 #include "EiTOSConfig.hpp"
 
 
-template<class T, uint8_t maxSize>
+template<class T, uint8_t MaxSize>
 class PriorityQueue_t {
  private:
-	T elements[maxSize];
+	T elements[MaxSize];
 	uint8_t ActualSize;
  public:
 	PriorityQueue_t();
@@ -20,22 +20,22 @@ class PriorityQueue_t {
 };
 
 
-template<class T, uint8_t maxSize>
-PriorityQueue_t<T, maxSize>::PriorityQueue_t() {
+template<class T, uint8_t MaxSize>
+PriorityQueue_t<T, MaxSize>::PriorityQueue_t() {
 	this->ActualSize = 0;
 }
 
-template<class T, uint8_t maxSize>
-uint8_t PriorityQueue_t<T, maxSize>::size() {
+template<class T, uint8_t MaxSize>
+uint8_t PriorityQueue_t<T, MaxSize>::size() {
 	return this->ActualSize;
 }
 
-template<class T, uint8_t maxSize>
-void PriorityQueue_t<T, maxSize>::push(const T & task) {
+template<class T, uint8_t MaxSize>
+void PriorityQueue_t<T, MaxSize>::push(const T & task) {
 	const int8_t LastPosition = this->size();
 	int8_t InsertionPosition = LastPosition;
 	for (int8_t i = 0; i < this->size(); ++i) {
-		if ( !( this->elements[i] < task ) ) {
+		if (!(this->elements[i] < task)) {
 			InsertionPosition = i;
 			break;
 		}
@@ -47,13 +47,13 @@ void PriorityQueue_t<T, maxSize>::push(const T & task) {
 	this->ActualSize++;
 }
 
-template<class T, uint8_t maxSize>
-T & PriorityQueue_t<T, maxSize>::front() {
+template<class T, uint8_t MaxSize>
+T & PriorityQueue_t<T, MaxSize>::front() {
 	return this->elements[this->size()-1];
 }
 
-template<class T, uint8_t maxSize>
-void PriorityQueue_t<T, maxSize>::pop() {
+template<class T, uint8_t MaxSize>
+void PriorityQueue_t<T, MaxSize>::pop() {
 	this->ActualSize--;
 }
 
