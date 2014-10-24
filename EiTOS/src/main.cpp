@@ -37,23 +37,21 @@ void Task3() {
 PriorityQueue_t<TaskLowLevel_t, 10> TaskQueue;
 
 int main() {
-	
 	// TP ONLY BEGIN
 	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
 
 	TaskLowLevel_t task;
 	task.StackStart = TaskAllocate(&Task1, (uint8_t*)0x1000);
 	TaskQueue.push(task);
-	
+
 	task.StackStart = TaskAllocate(&Task2, (uint8_t*)0x0F9C);
 	TaskQueue.push(task);
-	
+
 	task.StackStart = TaskAllocate(&Task3, (uint8_t*)0x0F38);
 	TaskQueue.push(task);
 	// TP ONLY END
 
 	OsInit();
 
-	while(1) {}
 	return 0;
 }

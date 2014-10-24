@@ -169,20 +169,31 @@ void TriggerSysTick() {
 
 void ResetSysTick() {
 	TCNT0 = 0;
+	// GTCCR |= (1 << PSRSYNC);  // Reset T0 & T1 prescallers
+}
+
+inline void __attribute__((always_inline)) ExecutePendingTask() {
+	ContextRestore();
+	asm volatile("ret");
 }
 
 extern PriorityQueue_t<TaskLowLevel_t, 10> TaskQueue;
 
 void OsInit() {
-	TaskLowLevel_t & t = TaskQueue.front();
-	ContextSet(&t);
-	TaskQueue.pop(); //first task push
-	
 	TCCR0A = (1 << WGM01);  // CTC
 	OCR0A  = 250-1;  // 1 kHz
 	TCCR0B = (1 << CS00)|(1 << CS01);  // presc 64
 	TIMSK0 = (1 << OCIE0A);
-	sei();
+
+	TaskLowLevel_t & t = TaskQueue.front();
+	ContextSet(&t);
+	TaskQueue.pop();  // first task pop
+
+	// Now we will execute this task (jump to first task)
+	ExecutePendingTask();  // This will also enable interrupts
+
+	// This will never execute, aber zicher ist zicher!
+	while(1) {}
 }
 
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
@@ -197,7 +208,7 @@ ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	now = TaskQueue.front();
 	ContextSet(&now);
 	TaskQueue.pop();
-	
+
 	PORTB &= ~(1 << PB3);
 	// TP ONLY END
 
