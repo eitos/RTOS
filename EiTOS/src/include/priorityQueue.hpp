@@ -1,5 +1,5 @@
-#ifndef __SCHEDULERQUEUE_HPP__
-#define __SCHEDULERQUEUE_HPP__
+#ifndef __PRIORITYQUEUE_HPP__
+#define __PRIORITYQUEUE_HPP__
 
 #include "task.hpp"
 #include "EiTOSConfig.hpp"
