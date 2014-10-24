@@ -1,6 +1,6 @@
 MAIN_DIR = ../EiTOS
 GTEST_DIR = gtest-1.7.0
-SOURCES  = $(MAIN_DIR)/src/task.cpp $(MAIN_DIR)/src/priorityQueue.cpp
+SOURCES  = $(MAIN_DIR)/src/task.cpp
 TESTS = tests_run_all.cpp priorityQueue.cpp
 
 PORT_INCLUDE = ../EiTOS/ports/mock/
