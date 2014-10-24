@@ -1,7 +1,7 @@
 MAIN_DIR = ../EiTOS
 GTEST_DIR = gtest-1.7.0
-SOURCES  = $(MAIN_DIR)/src/task.cpp $(MAIN_DIR)/src/schedulerQueue.cpp
-TESTS = tests_run_all.cpp scheduler.cpp
+SOURCES  = $(MAIN_DIR)/src/task.cpp $(MAIN_DIR)/src/priorityQueue.cpp
+TESTS = tests_run_all.cpp priorityQueue.cpp
 
 PORT_INCLUDE = ../EiTOS/ports/mock/
 INCLUDES = -I$(GTEST_DIR)/include -I$(PORT_INCLUDE) -I../EiTOS/include -I..
@@ -23,7 +23,7 @@ bootstrap:
 	make
 	rm -Rf gtest-1.7.0.zip
 
-test:	
+test:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(GTEST_LIBS) $(SOURCES) $(TESTS) -o test $(LIBS)
 	./test
 
