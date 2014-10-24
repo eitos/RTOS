@@ -5,9 +5,12 @@
 
 typedef void ( * TaskHandler_t )();
 
-typedef struct {
+struct TaskLowLevel_t {
 	uint8_t* StackStart;
-} TaskLowLevel_t;
+	bool operator<(const TaskLowLevel_t& second) {
+		return false; //every task have equal priority
+	}
+};
 
 
 #endif
