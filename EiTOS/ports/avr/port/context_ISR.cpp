@@ -155,14 +155,6 @@ uint8_t* TaskAllocate(TaskHandler_t Task, uint8_t* TaskStackStart) {
 	return TaskStackStart-STACK_HEAP;  // return address of stack heap in ram copy
 }
 
-void OsInit() {
-	TCCR0A = (1 << WGM01);  // CTC
-	OCR0A  = 250-1;  // 1 kHz
-	TCCR0B = (1 << CS00)|(1 << CS01);  // presc 64
-	TIMSK0 = (1 << OCIE0A);
-	sei();
-}
-
 void ContextGet(TaskLowLevel_t* Current) {
 	Current->StackStart = CurrentTaskStackAdress;
 }
@@ -179,20 +171,34 @@ void ResetSysTick() {
 	TCNT0 = 0;
 }
 
+extern PriorityQueue_t<TaskLowLevel_t, 10> TaskQueue;
+
+void OsInit() {
+	TaskLowLevel_t & t = TaskQueue.front();
+	ContextSet(&t);
+	TaskQueue.pop(); //first task push
+	
+	TCCR0A = (1 << WGM01);  // CTC
+	OCR0A  = 250-1;  // 1 kHz
+	TCCR0B = (1 << CS00)|(1 << CS01);  // presc 64
+	TIMSK0 = (1 << OCIE0A);
+	sei();
+}
+
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
 	ContextSave();
 	SwitchToOsStack();
 
 	// TP ONLY BEGIN
-	if(started == 0) {
-		started = 1;
-		ContextSet(&TaskList[CurrentProc]);
-	} else {
-		ContextGet(&TaskList[CurrentProc]);
-		CurrentProc++;
-		if(CurrentProc > 2) CurrentProc = 0;
-		ContextSet(&TaskList[CurrentProc]);
-	}
+	PORTB |= (1 << PB3);
+	TaskLowLevel_t now;
+	ContextGet(&now);
+	TaskQueue.push(now);
+	now = TaskQueue.front();
+	ContextSet(&now);
+	TaskQueue.pop();
+	
+	PORTB &= ~(1 << PB3);
 	// TP ONLY END
 
 	ContextRestore();

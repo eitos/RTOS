@@ -7,8 +7,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "port/context_ISR.hpp"
+#include "port/TaskLowLevel.hpp"
+#include "priorityQueue.hpp"
 
-// TP ONLY BEGIN
 TaskLowLevel_t TaskList[3];
 volatile uint8_t CurrentProc = 0;
 
@@ -32,15 +33,23 @@ void Task3() {
 		_delay_ms(250);
 	}
 }
-// TP ONLY END
+
+PriorityQueue_t<TaskLowLevel_t, 10> TaskQueue;
 
 int main() {
-	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2);
-
+	
 	// TP ONLY BEGIN
-	TaskList[0].StackStart = TaskAllocate(&Task1, (uint8_t*)0x1000);
-	TaskList[1].StackStart = TaskAllocate(&Task2, (uint8_t*)0x0F9C);
-	TaskList[2].StackStart = TaskAllocate(&Task3, (uint8_t*)0x0F38);
+	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
+
+	TaskLowLevel_t task;
+	task.StackStart = TaskAllocate(&Task1, (uint8_t*)0x1000);
+	TaskQueue.push(task);
+	
+	task.StackStart = TaskAllocate(&Task2, (uint8_t*)0x0F9C);
+	TaskQueue.push(task);
+	
+	task.StackStart = TaskAllocate(&Task3, (uint8_t*)0x0F38);
+	TaskQueue.push(task);
 	// TP ONLY END
 
 	OsInit();
