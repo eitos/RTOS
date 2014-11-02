@@ -6,12 +6,7 @@
  */ 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "port/context_ISR.hpp"
-#include "port/TaskLowLevel.hpp"
-#include "priorityQueue.hpp"
-
-TaskLowLevel_t TaskList[3];
-volatile uint8_t CurrentProc = 0;
+#include "OS.hpp"
 
 void Task1() {
 	while(1) {
@@ -34,8 +29,6 @@ void Task3() {
 	}
 }
 
-PriorityQueue_t<TaskLowLevel_t, 10> TaskQueue;
-
 int main() {
 	// TP ONLY BEGIN
 	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
@@ -51,7 +44,7 @@ int main() {
 	TaskQueue.push(task);
 	// TP ONLY END
 
-	OsInit();
+	InitOS();
 
 	return 0;
 }

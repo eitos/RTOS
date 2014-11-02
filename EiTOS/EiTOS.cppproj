@@ -158,10 +158,16 @@
     <Compile Include="ports\avr\port\context_ISR.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ports\avr\port\port.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ports\avr\port\StackStructure.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ports\avr\port\TaskLowLevel.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\OS.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\include\priorityQueue.hpp">
@@ -174,6 +180,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\OS.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\task.cpp">
