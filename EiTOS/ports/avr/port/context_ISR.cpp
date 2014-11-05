@@ -1,16 +1,13 @@
-/*
- * context_ISR.cpp
- *
- * Created: 2014-10-18 14:39:54
- *  Author: Piotr
- */ 
 #include <avr/interrupt.h>
 #include "context_ISR.hpp"
 #include "StackStructure.hpp"
+#include "consts.h"
 
-uint8_t* CurrentTaskStackAdress;
+uint8_t* CurrentTaskStackAdress = (uint8_t *)(RAMEND - OS_STACK_SIZE);
 
-uint8_t* TaskAllocate(TaskHandler_t Task, uint8_t* TaskStackStart) {
+TaskLowLevel_t TaskAllocate(TaskHandler_t Task, uint16_t StackSize) {
+	uint8_t * TaskStackStart = CurrentTaskStackAdress;
+	CurrentTaskStackAdress -= StackSize;
 	*(TaskStackStart-RETI_ADDR_HI) = ((uint16_t)Task) >> 8;
 	*(TaskStackStart-RETI_ADDR_LOW) = ((uint16_t)Task);
 	// Set I-bit in order to have interrupts enabled
@@ -48,7 +45,9 @@ uint8_t* TaskAllocate(TaskHandler_t Task, uint8_t* TaskStackStart) {
 	*(TaskStackStart-R30_C) = 0;
 	*(TaskStackStart-R31_C) = 0;
 
-	return TaskStackStart-STACK_HEAP;  // return address of stack heap in ram copy
+	TaskLowLevel_t task;
+	task.StackStart = (uint8_t *)(TaskStackStart-STACK_HEAP);
+	return task;  // return address of stack heap in ram copy
 }
 
 void ContextGet(TaskLowLevel_t* Current) {

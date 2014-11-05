@@ -1,9 +1,3 @@
-/*
- * main.cpp
- *
- * Created: 2014-10-18 00:35:09
- *  Author: Piotr
- */
 #include <avr/io.h>
 #include <util/delay.h>
 #include "OS.hpp"
@@ -25,27 +19,24 @@ void Task2() {
 void Task3() {
 	while(1) {
 		PORTB ^= (1 << PB0);
-		_delay_ms(250);
+		_delay_ms(200);
 	}
 }
 
 int main() {
 	// TP ONLY BEGIN
 	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
-	TaskStruct_t task;
-	task.priority = 0;
+	PORTB = 0;
 
-	task.lowLevel.StackStart = TaskAllocate(&Task1, (uint8_t*)0x1000);
-	TaskQueue.push(task);
+	sys_::taskCreate(&Task1, 0, 0x10);
+	sys_::taskCreate(&Task2, 0, 0x10);
+	sys_::taskCreate(&Task3, 0, 0x10);
 
-	task.lowLevel.StackStart = TaskAllocate(&Task2, (uint8_t*)0x0F9C);
-	TaskQueue.push(task);
 
-	task.lowLevel.StackStart = TaskAllocate(&Task3, (uint8_t*)0x0F38);
-	TaskQueue.push(task);
 	// TP ONLY END
 
-	InitOS();
+	//InitOS();
+	sys_::boot();
 
 	return 0;
 }

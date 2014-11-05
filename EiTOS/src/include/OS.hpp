@@ -1,11 +1,3 @@
-/*
- * OS.hpp
- *
- * Created: 2014-11-02 23:17:25
- *  Author: Piotr
- */
-
-
 #ifndef OS_HPP_
 #define OS_HPP_
 
@@ -20,5 +12,11 @@ extern PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
 void ProcSysTick();
 
 void InitOS();
+
+class sys_ {
+ public:
+	static void boot();
+	static void taskCreate(TaskHandler_t taskHandler, uint8_t priority, uint16_t StackSize);
+};
 
 #endif /* OS_HPP_ */

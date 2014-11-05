@@ -1,11 +1,3 @@
-/*
- * StackStructure.hpp
- *
- * Created: 2014-10-18 23:35:28
- *  Author: Piotr
- */ 
-
-
 #ifndef STACKSTRUCTURE_HPP_
 #define STACKSTRUCTURE_HPP_
 

@@ -1,14 +1,9 @@
-/*
- * OS.cpp
- *
- * Created: 2014-11-02 23:18:32
- *  Author: Piotr
- */
 #include "OS.hpp"
+#include "port/port.hpp"
 
 PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
 
-void InitOS(){
+void sys_::boot() {
 	InitSysTick();
 	TaskStruct_t & t = TaskQueue.front();
 	ContextSet(&t.lowLevel);
@@ -19,6 +14,14 @@ void InitOS(){
 	// This will never execute, aber zicher ist zicher!
 	while(1) {}
 }
+
+void sys_::taskCreate(TaskHandler_t taskHandler, uint8_t priority, uint16_t StackSize) {
+	TaskStruct_t task;
+	task.priority = priority;
+	task.lowLevel = TaskAllocate(taskHandler, StackSize);
+	TaskQueue.push(task);
+}
+
 
 void ProcSysTick() {
 	TaskStruct_t now;

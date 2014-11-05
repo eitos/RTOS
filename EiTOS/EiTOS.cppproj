@@ -152,6 +152,9 @@
     <Compile Include="include\EiTOSConfig.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ports\avr\port\consts.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ports\avr\port\context_ISR.cpp">
       <SubType>compile</SubType>
     </Compile>

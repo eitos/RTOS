@@ -1,9 +1,3 @@
-/*
- * context_ISR.hpp
- *
- * Created: 2014-10-18 15:30:57
- *  Author: Piotr
- */ 
 #ifndef CONTEXT_ISR_HPP
 #define CONTEXT_ISR_HPP
 
@@ -12,7 +6,7 @@
 
 extern uint8_t* CurrentTaskStackAdress;
 
-uint8_t* TaskAllocate(TaskHandler_t Task, uint8_t* TaskStackStart);
+TaskLowLevel_t TaskAllocate(TaskHandler_t Task, uint16_t StackSize);
 
 void ContextGet(TaskLowLevel_t* Current);
 
