@@ -6,10 +6,10 @@
 
 class TaskStruct_t {
  public:
-	TaskLowLevel_t lowLevelProperties;
-	int val, id;
+	TaskLowLevel_t lowLevel;
+	uint8_t priority;
 	uint8_t Norm() const {
-		return this->val;
+		return this->priority;
 	}
 	bool operator<(const TaskStruct_t & second) const {
 		return (this->Norm() < second.Norm());

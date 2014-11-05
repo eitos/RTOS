@@ -3,7 +3,7 @@
  *
  * Created: 2014-11-02 23:17:25
  *  Author: Piotr
- */ 
+ */
 
 
 #ifndef OS_HPP_
@@ -13,9 +13,9 @@
 #include "priorityQueue.hpp"
 #include "swapTable.hpp"
 #include "task.hpp"
+#include "EiTOSConfig.hpp"
 
-extern PriorityQueue_t<TaskLowLevel_t, 10> TaskQueue;
-
+extern PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
 
 void ProcSysTick();
 
