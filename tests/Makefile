@@ -15,13 +15,14 @@ CXXFLAGS = -g --static
 
 all: bootstrap test clean
 
-bootstrap:
-	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip
-	unzip  gtest-1.7.0.zip
-	cd gtest-1.7.0; \
-	./configure; \
-	make
-	rm -Rf gtest-1.7.0.zip
+gtest.zip :
+	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip -O gtest.zip
+
+bootstrap: gtest.zip
+	unzip -o  gtest.zip
+	cd gtest-1.7.0; ./configure
+	make -C gtest-1.7.0
+	rm -Rf gtest.zip
 
 test:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(GTEST_LIBS) $(SOURCES) $(TESTS) -o test $(LIBS)
@@ -30,6 +31,6 @@ test:
 clean:
 	rm -f test
 	rm -Rf gtest-1.7.0
-	rm -Rf gtest-1.7.0.zip*
+	rm -Rf gtest.zip*
 
 
