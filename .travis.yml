@@ -1,8 +1,3 @@
 language: cpp
 before_install: sudo apt-get install python
 script: cd tools; chmod +x check_all.sh; ./check_all.sh; cd ../tests; make
-
-# whitelist
-branches:
-  only:
-    - master
