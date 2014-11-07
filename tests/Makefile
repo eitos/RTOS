@@ -22,7 +22,6 @@ bootstrap: gtest.zip
 	unzip -o  gtest.zip
 	cd gtest-1.7.0; ./configure
 	make -C gtest-1.7.0
-	rm -Rf gtest.zip
 
 test:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(GTEST_LIBS) $(SOURCES) $(TESTS) -o test $(LIBS)
