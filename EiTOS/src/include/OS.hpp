@@ -12,7 +12,9 @@ extern PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
 namespace sys {
     void ProcSysTick();
     void boot();
-    void taskCreate(TaskHandler_t taskHandler, uint8_t priority, uint16_t StackSize);
+    void taskCreate(TaskHandler_t taskHandler,
+                    uint8_t priority,
+                    uint16_t StackSize);
 };
 
 #endif /* OS_HPP_ */

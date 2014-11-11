@@ -1,13 +1,12 @@
 #include <avr/interrupt.h>
 #include "ContextISR.hpp"
 #include "StackStructure.hpp"
-#include "consts.h"
+#include "consts.hpp"
 
 void * CurrentTaskStackAdress = (uint8_t *)(RAMEND - OS_STACK_SIZE);
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
-
-    CurrentTaskStackAdress -= stackSize; // allocate memory for task
+    CurrentTaskStackAdress -= stackSize;  // allocate memory for task
 
     void * TaskStackStart = CurrentTaskStackAdress;
 

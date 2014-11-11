@@ -15,7 +15,9 @@ void sys::boot() {
 		while(1) {}
 }
 
-void sys::taskCreate(TaskHandler_t taskHandler, uint8_t priority, uint16_t StackSize) {
+void sys::taskCreate(TaskHandler_t taskHandler,
+										 uint8_t priority,
+										 uint16_t StackSize) {
 		TaskStruct_t task;
 		task.priority = priority;
 		task.lowLevel = TaskAllocate(taskHandler, StackSize);

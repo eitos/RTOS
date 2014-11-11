@@ -6,11 +6,11 @@
 TEST(PriorityQueueTest, ints) {
     PriorityQueue_t<int, 10> Q;
     EXPECT_EQ(Q.size(), 0);
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
         Q.push(i);
     }
     EXPECT_EQ(Q.size(), 10);
-    for(int i = 9; i >= 0; --i) {
+    for ( int i = 9; i >= 0; --i ) {
         int & t = Q.front();
         EXPECT_EQ(t, i);
         Q.pop();
@@ -28,12 +28,12 @@ struct test1 {
 TEST(PriorityQueueTest, test1) {
     PriorityQueue_t<test1, 10> Q;
     test1 elem;
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
       elem.val = i;
         Q.push(elem);
     }
     EXPECT_EQ(Q.size(), 10);
-    for(int i = 9; i >= 0; --i) {
+    for ( int i = 9; i >= 0; --i ) {
         test1 & t = Q.front();
         EXPECT_EQ(t.val, i);
         Q.pop();
@@ -51,12 +51,12 @@ struct test2 {
 TEST(PriorityQueueTest, test2) {
     PriorityQueue_t<test2, 10> Q;
     test2 elem;
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
       elem.val = i;
         Q.push(elem);
     }
     EXPECT_EQ(Q.size(), 10);
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
         test2 & t = Q.front();
         EXPECT_EQ(t.val, i);
         Q.pop();
@@ -68,18 +68,18 @@ TEST(PriorityQueueTest, test2Diff) {
     PriorityQueue_t<test2, 20> Q;
     EXPECT_EQ(Q.size(), 0);
     test2 elem;
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
       elem.val = i;
         Q.push(elem);
     }
     EXPECT_EQ(Q.size(), 10);
-    for(int i = 9; i >= 0; --i) {
+    for ( int i = 9; i >= 0; --i ) {
       elem.val = i;
         Q.push(elem);
     }
     EXPECT_EQ(Q.size(), 20);
-    for(int i = 0; i < 10; ++i) {
-      for(int j = 0; j < 2; ++j) {
+    for ( int i = 0; i < 10; ++i ) {
+      for ( int j = 0; j < 2; ++j ) {
           test2 & t = Q.front();
           EXPECT_EQ(t.val, i);
           Q.pop();
@@ -98,13 +98,13 @@ struct test3 {
 TEST(PriorityQueueTest, test3) {
     PriorityQueue_t<test3, 10> Q;
     test3 elem;
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
         elem.id = i;
         elem.val = i;
         Q.push(elem);
     }
     EXPECT_EQ(Q.size(), 10);
-    for(int i = 9; i >= 0; --i) {
+    for ( int i = 9; i >= 0; --i ) {
         test3 & t = Q.front();
         EXPECT_EQ(t.val, i);
         EXPECT_EQ(t.id, i);
@@ -117,12 +117,12 @@ TEST(PriorityQueueTest, test3smallSameVals) {
     PriorityQueue_t<test3, 100> Q;
     test3 elem;
     elem.val = 1;
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
         elem.id = i;
         Q.push(elem);
     }
     EXPECT_EQ(Q.size(), 10);
-    for(int i = 0; i < 10; ++i) {
+    for ( int i = 0; i < 10; ++i ) {
         test3 & t = Q.front();
         EXPECT_EQ(t.val, 1);
         EXPECT_EQ(t.id, i);
@@ -134,16 +134,16 @@ TEST(PriorityQueueTest, test3smallSameVals) {
 TEST(PriorityQueueTest, test3diffVals) {
     PriorityQueue_t<test3, 100> Q;
     test3 elem;
-    for(int i = 0; i < 10; ++i) {
-      for(int j = 0; j < 10; ++j) {
+    for ( int i = 0; i < 10; ++i ) {
+      for ( int j = 0; j < 10; ++j ) {
         elem.id = i;
         elem.val = j;
           Q.push(elem);
       }
     }
     EXPECT_EQ(Q.size(), 100);
-    for(int i = 9; i >= 0; --i) {
-      for(int j = 0; j < 10; ++j) {
+    for ( int i = 9; i >= 0; --i ) {
+      for ( int j = 0; j < 10; ++j ) {
         test3 & t = Q.front();
           EXPECT_EQ(t.val, i);
           EXPECT_EQ(t.id, j);
@@ -157,14 +157,14 @@ TEST(PriorityQueueTest, test3diffVals) {
 TEST(PriorityQueueTest, TaskStruct) {
     PriorityQueue_t<TaskStruct_t, 100> Q;
     TaskStruct_t elem;
-    for(int i = 0; i < 10; ++i) {
-        for(int j = 0; j < 10; ++j) {
+    for ( int i = 0; i < 10; ++i ) {
+        for ( int j = 0; j < 10; ++j ) {
             Q.push(elem);
       }
     }
     EXPECT_EQ(Q.size(), 100);
-    for(int i = 9; i >= 0; --i) {
-        for(int j = 0; j < 10; ++j) {
+    for ( int i = 9; i >= 0; --i ) {
+        for ( int j = 0; j < 10; ++j ) {
             TaskStruct_t & t = Q.front();
             Q.pop();
       }
