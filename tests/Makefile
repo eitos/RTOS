@@ -12,9 +12,11 @@ GTEST_LIBS = $(GTEST_DIR)/lib/.libs/libgtest.a
 LIBS = -pthread -lgtest
 
 CXX = g++
-CXXFLAGS = -g --static
+CXXFLAGS = -ggdb
 
-all: test clean
+PHONY=all test run clean
+
+all: test run
 
 gtest.zip :
 	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip -O gtest.zip
@@ -26,7 +28,10 @@ gtest-1.7.0: gtest.zip
 
 test: gtest-1.7.0
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS_FOLDERS) $(GTEST_LIBS) $(SOURCES) $(TESTS) -o test $(LIBS)
-	./test
+
+run: test
+	LD_LIBRARY_PATH=gtest-1.7.0/lib/.libs:$LD_LIBRARY_PATH  ./test
+	rm -f test
 
 clean:
 	rm -f test
