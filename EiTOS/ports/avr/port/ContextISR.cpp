@@ -79,7 +79,6 @@ void InitSysTick() {
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
     ContextSave();
     SwitchToOsStack();
-	
     ProcSysTick();
 
     ContextRestore();
