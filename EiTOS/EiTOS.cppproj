@@ -26,16 +26,16 @@
     <BootSegment>2</BootSegment>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <AsfFrameworkConfig>
-      <framework-data xmlns="">
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.17.0" />
-        </dependencies>
-      </framework-data>
+      <framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.6.0" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
     <avrtool>com.atmel.avrdbg.tool.avrdragon</avrtool>
     <com_atmel_avrdbg_tool_avrdragon>
@@ -155,10 +155,10 @@
     <Compile Include="ports\avr\port\consts.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ports\avr\port\context_ISR.cpp">
+    <Compile Include="ports\avr\port\ContextIRS.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ports\avr\port\context_ISR.hpp">
+    <Compile Include="ports\avr\port\ContextIRS.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ports\avr\port\port.hpp">
@@ -186,9 +186,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\OS.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\task.cpp">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

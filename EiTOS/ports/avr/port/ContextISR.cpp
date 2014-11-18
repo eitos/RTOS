@@ -1,14 +1,17 @@
 #include <avr/interrupt.h>
-#include "ContextISR.hpp"
-#include "StackStructure.hpp"
-#include "consts.hpp"
 
-void * CurrentTaskStackAdress = (uint8_t *)(RAMEND - OS_STACK_SIZE);
+#include <OS.hpp>
+
+#include <port/ContextIRS.hpp>
+#include <port/StackStructure.hpp>
+#include <port/consts.h>
+
+uint8_t * CurrentTaskStackAdress = (uint8_t *)(RAMEND - OS_STACK_SIZE);
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
     CurrentTaskStackAdress -= stackSize;  // allocate memory for task
 
-    void * TaskStackStart = CurrentTaskStackAdress;
+    uint8_t * TaskStackStart = CurrentTaskStackAdress;
 
     *(TaskStackStart - RETI_LOW_OFFSET) = ((uint16_t)taskHandler);
     *(TaskStackStart - RETI_HIGH_OFFSET) = ((uint16_t)taskHandler) >> 8;
@@ -79,7 +82,13 @@ void InitSysTick() {
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
     ContextSave();
     SwitchToOsStack();
+<<<<<<< HEAD:EiTOS/ports/avr/port/ContextISR.cpp
     ProcSysTick();
+=======
+
+
+    sys::ProcSysTick();
+>>>>>>> Fixes under AS.:EiTOS/ports/avr/port/ContextIRS.cpp
 
     ContextRestore();
     asm volatile("reti");
