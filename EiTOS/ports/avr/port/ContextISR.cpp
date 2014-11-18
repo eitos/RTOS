@@ -82,13 +82,8 @@ void InitSysTick() {
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
     ContextSave();
     SwitchToOsStack();
-<<<<<<< HEAD:EiTOS/ports/avr/port/ContextISR.cpp
-    ProcSysTick();
-=======
-
 
     sys::ProcSysTick();
->>>>>>> Fixes under AS.:EiTOS/ports/avr/port/ContextIRS.cpp
 
     ContextRestore();
     asm volatile("reti");
