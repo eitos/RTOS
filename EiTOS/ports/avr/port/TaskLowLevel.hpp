@@ -9,5 +9,8 @@ struct TaskLowLevel_t {
 	uint8_t* StackStart;
 };
 
+void ContextGet(TaskLowLevel_t* Current);
+
+void ContextSet(TaskLowLevel_t* Next);
 
 #endif
