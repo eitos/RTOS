@@ -1,49 +1,41 @@
-/*
- * StackStructure.hpp
- *
- * Created: 2014-10-18 23:35:28
- *  Author: Piotr
- */ 
-
-
 #ifndef STACKSTRUCTURE_HPP_
 #define STACKSTRUCTURE_HPP_
 
-#define RETI_ADDR_LOW	0
-#define RETI_ADDR_HI	1
-#define R0_C			2
-#define SREG_CP			3
-#define R1_C			4
-#define R2_C			5
-#define R3_C			6
-#define R4_C			7
-#define R5_C			8
-#define R6_C			9
-#define R7_C			10
-#define R8_C			11
-#define R9_C			12
-#define R10_C			13
-#define R11_C			14
-#define R12_C			15
-#define R13_C			16
-#define R14_C			17
-#define R15_C			18
-#define R16_C			19
-#define R17_C			20
-#define R18_C			21
-#define R19_C			22
-#define R20_C			23
-#define R21_C			24
-#define R22_C			25
-#define R23_C			26
-#define R24_C			27
-#define R25_C			28
-#define R26_C			29
-#define R27_C			30
-#define R28_C			31
-#define R29_C			32
-#define R30_C			33
-#define R31_C			34
-#define STACK_HEAP		35
+#define RETI_LOW_OFFSET      0
+#define RETI_HIGH_OFFSET     1
+#define SREG_OFFSET          3
+#define R0_OFFSET            2
+#define R1_OFFSET            4
+#define R2_OFFSET            5
+#define R3_OFFSET            6
+#define R4_OFFSET            7
+#define R5_OFFSET            8
+#define R6_OFFSET            9
+#define R7_OFFSET            10
+#define R8_OFFSET            11
+#define R9_OFFSET            12
+#define R10_OFFSET           13
+#define R11_OFFSET           14
+#define R12_OFFSET           15
+#define R13_OFFSET           16
+#define R14_OFFSET           17
+#define R15_OFFSET           18
+#define R16_OFFSET           19
+#define R17_OFFSET           20
+#define R18_OFFSET           21
+#define R19_OFFSET           22
+#define R20_OFFSET           23
+#define R21_OFFSET           24
+#define R22_OFFSET           25
+#define R23_OFFSET           26
+#define R24_OFFSET           27
+#define R25_OFFSET           28
+#define R26_OFFSET           29
+#define R27_OFFSET           30
+#define R28_OFFSET           31
+#define R29_OFFSET           32
+#define R30_OFFSET           33
+#define R31_OFFSET           34
+#define TASK_HEAP_OFFSET     35
 
 #endif /* STACKSTRUCTURE_HPP_ */

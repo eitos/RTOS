@@ -26,14 +26,14 @@
     <BootSegment>2</BootSegment>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <AsfFrameworkConfig>
-      <framework-data xmlns="">
+      <framework-data>
         <options />
         <configurations />
         <files />
         <documentation help="" />
         <offline-documentation help="" />
         <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.17.0" />
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.6.0" />
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
@@ -50,6 +50,7 @@
       <ToolName>AVR Dragon</ToolName>
     </com_atmel_avrdbg_tool_avrdragon>
     <avrtoolinterface>JTAG</avrtoolinterface>
+    <preserveEEPROM>true</preserveEEPROM>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -121,6 +122,8 @@
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
             <Value>../ports/avr</Value>
+            <Value>../include</Value>
+            <Value>../src/include</Value>
           </ListValues>
         </avrgcccpp.compiler.directories.IncludePaths>
         <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
@@ -146,10 +149,16 @@
     <Folder Include="src\include" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ports\avr\port\context_ISR.cpp">
+    <Compile Include="include\EiTOSConfig.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ports\avr\port\context_ISR.hpp">
+    <Compile Include="ports\avr\port\consts.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ports\avr\port\ContextISR.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ports\avr\port\ContextISR.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ports\avr\port\port.hpp">
@@ -161,17 +170,24 @@
     <Compile Include="ports\avr\port\TaskLowLevel.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\include\OS.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\priorityQueue.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\swapTable.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\task.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\main.cpp">
       <SubType>compile</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="include\.gitkeep">
+    <Compile Include="src\OS.cpp">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\include\.gitkeep">
-      <SubType>compile</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
