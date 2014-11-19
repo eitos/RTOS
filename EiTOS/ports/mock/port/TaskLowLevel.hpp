@@ -4,7 +4,7 @@
 #include <inttypes.h>
 
 struct TaskLowLevel_t {
-	uint16_t Stack;
+    uint16_t Stack;
 };
 
 

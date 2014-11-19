@@ -6,7 +6,7 @@
 #include <port/StackStructure.hpp>
 #include <port/consts.h>
 
-uint8_t * CurrentTaskStackAdress = (uint8_t *)(RAMEND - OS_STACK_SIZE);
+uint8_t * CurrentTaskStackAdress = static_cast<uint8_t *>(RAMEND-OS_STACK_SIZE);
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
     CurrentTaskStackAdress -= stackSize;  // allocate memory for task
@@ -51,7 +51,7 @@ TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
     *(TaskStackStart - R31_OFFSET) = 0;
 
     TaskLowLevel_t task;
-    task.StackStart = (uint8_t *)(TaskStackStart - TASK_HEAP_OFFSET);
+    task.StackStart = static_cast<uint8_t *>(TaskStackStart - TASK_HEAP_OFFSET);
     return task;  // return address of stack heap in ram copy
 }
 
