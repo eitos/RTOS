@@ -4,7 +4,7 @@
 
 #include <port/ContextISR.hpp>
 #include <port/StackStructure.hpp>
-#include <port/consts.h>
+#include <port/consts.hpp>
 
 uint8_t * CurrentTaskStackAdress =
           reinterpret_cast<uint8_t *>(RAMEND - OS_STACK_SIZE);

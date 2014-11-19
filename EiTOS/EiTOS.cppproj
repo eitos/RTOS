@@ -146,13 +146,27 @@
     <Folder Include="ports\avr" />
     <Folder Include="ports\avr\port" />
     <Folder Include="src" />
-    <Folder Include="src\include" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="include\EiTOSConfig.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ports\avr\port\consts.h">
+    <Compile Include="include\OS.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\priorityQueue.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\swapTable.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\task.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ports\avr\port\consts.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ports\avr\port\ContextISR.cpp">
@@ -168,21 +182,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ports\avr\port\TaskLowLevel.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\include\OS.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\include\priorityQueue.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\include\swapTable.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\include\task.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\main.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\OS.cpp">
