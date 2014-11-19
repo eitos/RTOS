@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 
 TEST(swapTableTest, testSize) {
-	SwapTable_t<int, 100> Q;
+    SwapTable_t<int, 100> Q;
     EXPECT_EQ(Q.size(), 0);
     for ( int i = 0; i < 100; ++i ) {
         Q.add(i);

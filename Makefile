@@ -1,6 +1,6 @@
 .PHONY=test check clean
 
-LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright,-whitespace/tab,-readability/casting
+LINTER_PARAMS=--extensions=hpp,cpp,h,c --filter=-legal/copyright
 
 PHONY+=all test check
 
