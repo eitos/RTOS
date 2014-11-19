@@ -6,7 +6,8 @@
 #include <port/StackStructure.hpp>
 #include <port/consts.h>
 
-uint8_t * CurrentTaskStackAdress = static_cast<uint8_t *>(RAMEND-OS_STACK_SIZE);
+uint8_t * CurrentTaskStackAdress =
+          reinterpret_cast<uint8_t *>(RAMEND - OS_STACK_SIZE);
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
     CurrentTaskStackAdress -= stackSize;  // allocate memory for task
