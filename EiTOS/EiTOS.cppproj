@@ -142,12 +142,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="include" />
+    <Folder Include="drivers" />
     <Folder Include="ports" />
-    <Folder Include="ports\avr" />
-    <Folder Include="ports\avr\port" />
+    <Folder Include="ports\avr\" />
+    <Folder Include="ports\avr\port\" />
     <Folder Include="src" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="drivers\serial.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\EiTOSConfig.hpp">
       <SubType>compile</SubType>
     </Compile>

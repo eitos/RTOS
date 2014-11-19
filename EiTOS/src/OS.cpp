@@ -1,5 +1,6 @@
 #include "OS.hpp"
 #include <port/port.hpp>
+#include <avr/io.h>
 
 PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
 
@@ -26,6 +27,7 @@ void sys::taskCreate(TaskHandler_t taskHandler,
 
 
 void sys::ProcSysTick() {
+    PORTA ^= (1 << PA0);
     TaskStruct_t now;
     now = TaskQueue.front();
     TaskQueue.pop();
