@@ -4,6 +4,10 @@
 #include <inttypes.h>
 #include "port/TaskLowLevel.hpp"
 
+#if defined(__EITOS_PORT__) && !defined(__EITOS_AVR_PORT__)
+#error "You are using two different ports."
+#endif
+
 extern uint8_t* CurrentTaskStackAdress;
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t Task, uint16_t StackSize);

@@ -1,6 +1,10 @@
 #ifndef STACKSTRUCTURE_HPP_
 #define STACKSTRUCTURE_HPP_
 
+#if defined(__EITOS_PORT__) && !defined(__EITOS_AVR_PORT__)
+#error "You are using two different ports."
+#endif
+
 #define RETI_LOW_OFFSET      0
 #define RETI_HIGH_OFFSET     1
 #define SREG_OFFSET          3

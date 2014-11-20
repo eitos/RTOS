@@ -3,6 +3,10 @@
 
 #include <inttypes.h>
 
+#if defined(__EITOS_PORT__) && !defined(__EITOS_AVR_PORT__)
+#error "You are using two different ports."
+#endif
+
 typedef void ( * TaskHandler_t )();
 
 struct TaskLowLevel_t {

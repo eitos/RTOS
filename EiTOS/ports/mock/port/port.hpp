@@ -2,7 +2,15 @@
 #ifndef __PORT_HPP__
 #define __PORT_HPP__
 
+#define __EITOS_PORT__
+#define __EITOS_MOCK_PORT__
+
 #include "TaskLowLevel.hpp"
+
+#if defined(__EITOS_PORT__) && !defined(__EITOS_MOCK_PORT__)
+#error "You are using two different ports."
+#endif
+
 
 typedef void ( * TaskHandler_t )();
 
