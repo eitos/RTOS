@@ -9,7 +9,7 @@ void Task1() {
     while (1) {
         PORTB ^= (1 << PB2);
         _delay_ms(50);
-        serial.sendBuf("test!");
+        serial.sendBuf("test!\r\n");
     }
 }
 
@@ -38,7 +38,7 @@ int main() {
         serial.printf("test!\n\r");
         _delay_ms(100);
     }*/
-    sys::taskCreate(&Task1, 0, 0x10);
+    sys::taskCreate(&Task1, 0, 0xFF);
     sys::taskCreate(&Task2, 0, 0x10);
     sys::taskCreate(&Task3, 0, 0x10);
 

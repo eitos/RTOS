@@ -10,9 +10,10 @@ uint8_t * CurrentTaskStackAdress =
           reinterpret_cast<uint8_t *>(RAMEND - OS_STACK_SIZE);
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
-    CurrentTaskStackAdress -= stackSize;  // allocate memory for task
 
     uint8_t * TaskStackStart = CurrentTaskStackAdress;
+
+	CurrentTaskStackAdress -= (stackSize + TASK_HEAP_OFFSET);  // allocate memory for task
 
     *(TaskStackStart - RETI_LOW_OFFSET) = ((uint16_t)taskHandler);
     *(TaskStackStart - RETI_HIGH_OFFSET) = ((uint16_t)taskHandler) >> 8;
