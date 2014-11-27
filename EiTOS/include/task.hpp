@@ -10,14 +10,14 @@ class TaskStruct_t {
  public:
     TaskLowLevel_t lowLevel;
     uint8_t priority;
-	uint8_t blockingMutexNr;
+    uint8_t blockingMutexNr;
     uint8_t Norm() const {
         return this->priority;
     }
     bool operator<(const TaskStruct_t & second) const {
-		if( this->blockingMutexNr == second.blockingMutexNr ) {
-			return (this->priority < second.priority);
-		}
+        if ( this->blockingMutexNr == second.blockingMutexNr ) {
+            return (this->priority < second.priority);
+        }
         return (this->blockingMutexNr > second.blockingMutexNr);
     }
  private:

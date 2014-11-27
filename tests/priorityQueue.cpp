@@ -157,11 +157,11 @@ TEST(PriorityQueueTest, test3diffVals) {
 TEST(PriorityQueueTest, TaskStruct) {
     PriorityQueue_t<TaskStruct_t, 100> Q;
     TaskStruct_t elem;
-	elem.blockingMutexNr = 0;
+    elem.blockingMutexNr = 0;
     for ( int i = 0; i < 10; ++i ) {
         for ( int j = 0; j < 10; ++j ) {
             Q.push(elem);
-      }
+        }
     }
     EXPECT_EQ(Q.size(), 100);
     for ( int i = 9; i >= 0; --i ) {
@@ -176,11 +176,10 @@ TEST(PriorityQueueTest, TaskStruct) {
 TEST(PriorityQueueTest, TaskStructMutex) {
     PriorityQueue_t<TaskStruct_t, 100> Q;
     TaskStruct_t elem;
-	
     for ( int i = 0; i < 10; ++i ) {
-		elem.blockingMutexNr = i;
+        elem.blockingMutexNr = i;
         for ( int j = 0; j < 10; ++j ) {
-			elem.priority = j;
+            elem.priority = j;
             Q.push(elem);
         }
     }
@@ -188,8 +187,8 @@ TEST(PriorityQueueTest, TaskStructMutex) {
     for ( int i = 0; i < 10; ++i ) {
         for ( int j = 9; j >= 0; --j ) {
             TaskStruct_t & t = Q.front();
-			EXPECT_EQ(t.priority, j);
-			EXPECT_EQ(t.blockingMutexNr, i);
+            EXPECT_EQ(t.priority, j);
+            EXPECT_EQ(t.blockingMutexNr, i);
             Q.pop();
         }
     }
@@ -209,7 +208,7 @@ TEST(PriorityQueueTest, TaskStructEqualNorm) {
         TaskStruct_t & t = Q.front();
         EXPECT_EQ(t.priority, 0);
         EXPECT_EQ(t.blockingMutexNr, 0);
-		EXPECT_EQ(t.lowLevel.Stack, i);
+        EXPECT_EQ(t.lowLevel.Stack, i);
         Q.pop();
     }
     EXPECT_EQ(Q.size(), 0);
