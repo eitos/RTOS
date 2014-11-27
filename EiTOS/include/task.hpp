@@ -3,6 +3,7 @@
 
 #include "port/TaskLowLevel.hpp"
 #include "EiTOSConfig.hpp"
+#include "priorityQueue.hpp"
 
 const uint8_t TASK_RUNNING = 0;
 
@@ -22,5 +23,7 @@ class TaskStruct_t {
     }
  private:
 };
+
+extern PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
 
 #endif

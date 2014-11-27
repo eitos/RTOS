@@ -214,3 +214,67 @@ TEST(PriorityQueueTest, TaskStructEqualNorm) {
     EXPECT_EQ(Q.size(), 0);
 }
 
+TEST(PriorityQueueTest, TaskStructOperatorBrace) {
+    PriorityQueue_t<TaskStruct_t, 54> Q;
+    TaskStruct_t elem;
+    for ( int i = 0; i < 3; ++i ) {
+        elem.blockingMutexNr = i;
+        for ( int j = 0; j < 3; ++j ) {
+            elem.priority = j;
+            for ( int k = 0; k < 3; ++k ) {
+                elem.lowLevel.Stack = k;
+                Q.push(elem);
+            }
+        }
+    }
+    for ( int i = 2; i >= 0; --i ) {
+        elem.blockingMutexNr = i;
+        for ( int j = 2; j >= 0; --j ) {
+            elem.priority = j;
+            for ( int k = 0; k < 3; ++k ) {
+                elem.lowLevel.Stack = k;
+                Q.push(elem);
+            }
+        }
+    }
+    EXPECT_EQ(Q.size(), 54);
+    int index = 0;
+    for ( int i = 0; i < 3; ++i ) {
+        for ( int j = 0; j < 3; ++j ) {
+            for ( int n = 0; n < 2; ++n ) {
+                for ( int k = 0; k < 3; ++k ) {
+                    elem = Q[index++];
+                    EXPECT_EQ(elem.blockingMutexNr, 2-i);
+                    EXPECT_EQ(elem.priority, j);
+                    EXPECT_EQ(elem.lowLevel.Stack, 2-k);
+                }
+            }
+        }
+    }
+    EXPECT_EQ(Q.size(), 54);
+    while (Q.size() > 0) Q.pop();
+    EXPECT_EQ(Q.size(), 0);
+}
+
+TEST(PriorityQueueTest, TaskStructRemoval) {
+    PriorityQueue_t<TaskStruct_t, 100> Q;
+    TaskStruct_t elem;
+    elem.blockingMutexNr = elem.priority = 0;
+    for ( int i = 0; i < 100; ++i ) {
+        elem.lowLevel.Stack = i;
+        Q.push(elem);
+    }
+    EXPECT_EQ(Q.size(), 100);
+    for ( int i = 0; i < 100; ++i ) {
+        TaskStruct_t & t = Q[0];
+        EXPECT_EQ(t.priority, 0);
+        Q[0].priority = 1;
+        EXPECT_EQ(Q[0].priority, 1);
+        t.priority = 2;
+        EXPECT_EQ(t.priority, 2);
+        EXPECT_EQ(t.blockingMutexNr, 0);
+        EXPECT_EQ(t.lowLevel.Stack, 99-i);
+        Q.remove(0);
+    }
+    EXPECT_EQ(Q.size(), 0);
+}
