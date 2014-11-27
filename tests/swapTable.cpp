@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "EiTOS/src/include/swapTable.hpp"
+#include <swapTable.hpp>
 #include "gtest/gtest.h"
 
 TEST(swapTableTest, testSize) {
