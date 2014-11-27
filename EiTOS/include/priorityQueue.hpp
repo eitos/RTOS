@@ -1,8 +1,8 @@
 #ifndef __PRIORITYQUEUE_HPP__
 #define __PRIORITYQUEUE_HPP__
 
+#include <inttypes.h>
 #include "EiTOSConfig.hpp"
-
 
 template<class T, uint8_t MaxSize>
 class PriorityQueue_t {
