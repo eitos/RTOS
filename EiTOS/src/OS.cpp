@@ -30,7 +30,7 @@ void sys::ProcSysTick() {
     PORTA ^= (1 << PA0);
     TaskStruct_t now;
     now = TaskQueue.front();
-	ContextGet(&now.lowLevel);
+    ContextGet(&now.lowLevel);
     TaskQueue.pop();
     TaskQueue.push(now);
     now = TaskQueue.front();

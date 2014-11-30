@@ -15,7 +15,7 @@ uint8_t * LastCreatedTaskStackAdress =
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
     uint8_t * TaskStackStart = LastCreatedTaskStackAdress;
-    
+
     // allocate memory for task
     LastCreatedTaskStackAdress -= (stackSize + TASK_HEAP_OFFSET);
 

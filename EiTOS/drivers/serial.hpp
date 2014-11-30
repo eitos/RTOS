@@ -22,7 +22,7 @@ class Serial {
         while (*buf) {
             UDR0 = *buf;
             buf++;
-            while ( !(UCSR0A & (1 << UDRE0)) ){}
+            while ( !(UCSR0A & (1 << UDRE0)) ) {}
         }
     }
 uint8_t printf(char* str, ...) {
