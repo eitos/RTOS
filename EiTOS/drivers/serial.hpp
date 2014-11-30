@@ -7,7 +7,7 @@ class Serial {
 
  public:
     void init(uint16_t baudRate) {
-        //TXD0 as output
+        // TXD0 as output
         DDRD |= (1 << PD1);
         PORTD |= (1 << PD1);
         uint16_t ubrr;
