@@ -7,6 +7,7 @@ class Serial {
 
  public:
     void init(uint16_t baudRate) {
+        //TXD0 as output
         DDRD |= (1 << PD1);
         PORTD |= (1 << PD1);
         uint16_t ubrr;
@@ -15,8 +16,8 @@ class Serial {
         UBRR0L = static_cast<uint8_t>(ubrr);
         /* Enable receiver and transmitter */
         UCSR0B = (1 << RXEN0) | (1 << TXEN0);
-        /* Set frame format: 8data, 2stop bit */
-        UCSR0C =  (1 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00);
+        /* Set frame format: 8data, 1stop bit */
+        UCSR0C =   (1 << UCSZ01) | (1 << UCSZ00);
     }
     void sendBuf(char * buf) {
         while (*buf) {
@@ -25,7 +26,7 @@ class Serial {
             while ( !(UCSR0A & (1 << UDRE0)) ) {}
         }
     }
-uint8_t printf(char* str, ...) {
+uint8_t printf(const char* str, ...) {
         va_list arg;
         int count = 0;
 
