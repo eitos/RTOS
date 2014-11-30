@@ -33,8 +33,7 @@ void Task3() {
 int main() {
     // TP ONLY BEGIN
     serial.init(9600U);
-    DDRA |= (1 << PA0);
-    DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
+    DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2);
     PORTB = 0;
 
     sys::taskCreate(&Task1, 0, 0xFF);
