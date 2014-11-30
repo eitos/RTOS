@@ -28,6 +28,7 @@ void sys::taskCreate(TaskHandler_t taskHandler,
 void sys::ProcSysTick() {
     TaskStruct_t now;
     now = TaskQueue.front();
+    ContextGet(&now.lowLevel);
     TaskQueue.pop();
     TaskQueue.push(now);
     now = TaskQueue.front();
