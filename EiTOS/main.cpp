@@ -8,13 +8,12 @@ Serial serial;
 
 void Task1() {
     while (1) {
-		static uint8_t i=0;
+        static uint8_t i = 0;
         PORTB ^= (1 << PB2);
         _delay_ms(50);
-		serial.printf("Test %d\r\n",i);
-		i++;
+        serial.printf("Test %d\r\n", i);
+        i++;
     }
-	
 }
 
 void Task2() {

@@ -22,7 +22,7 @@ gtest.zip :
 	wget http://googletest.googlecode.com/files/gtest-1.7.0.zip -O gtest.zip
 
 gtest-1.7.0: gtest.zip
-	unzip -o  gtest.zip
+	#unzip -o  gtest.zip
 	cd gtest-1.7.0; ./configure
 	make -C gtest-1.7.0
 

@@ -3,7 +3,8 @@
 
 class Serial {
  private:
-    char buff[30];   
+    char buff[30];
+
  public:
     void init(uint16_t baudRate) {
         DDRD |= (1 << PD1);
@@ -16,20 +17,20 @@ class Serial {
         UCSR0B = (1 << RXEN0) | (1 << TXEN0);
         /* Set frame format: 8data, 2stop bit */
         UCSR0C =  (1 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00);
-    }    
+    }
     void sendBuf(char * buf) {
         while (*buf) {
             UDR0 = *buf;
             buf++;
-            while ( !(UCSR0A & (1 << UDRE0)) );
+            while ( !(UCSR0A & (1 << UDRE0)) ){}
         }
     }
 uint8_t printf(char* str, ...) {
         va_list arg;
-        int count=0;
+        int count = 0;
 
         va_start(arg, str);
-        count = vsprintf(this->buff,str,arg);
+        count = vsprintf(this->buff, str, arg);
         this->sendBuf(this->buff);
         va_end(arg);
         return count;

@@ -11,13 +11,13 @@ uint8_t * CurrentTaskStackAdress;
 
 // pointer to last created process stack
 uint8_t * LastCreatedTaskStackAdress =
-	reinterpret_cast<uint8_t *>(RAMEND - OS_STACK_SIZE);
+    reinterpret_cast<uint8_t *>(RAMEND - OS_STACK_SIZE);
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
-
     uint8_t * TaskStackStart = LastCreatedTaskStackAdress;
-
-	LastCreatedTaskStackAdress -= (stackSize + TASK_HEAP_OFFSET);  // allocate memory for task
+    
+    // allocate memory for task
+    LastCreatedTaskStackAdress -= (stackSize + TASK_HEAP_OFFSET);
 
     *(TaskStackStart - RETI_LOW_OFFSET) = ((uint16_t)taskHandler);
     *(TaskStackStart - RETI_HIGH_OFFSET) = ((uint16_t)taskHandler) >> 8;
