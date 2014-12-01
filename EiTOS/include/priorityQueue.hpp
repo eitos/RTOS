@@ -12,10 +12,10 @@ class PriorityQueue_t {
  public:
     PriorityQueue_t();
     void init();
-    uint8_t size();
+    uint8_t size() const;
     void push(const T & task);
-    T & front();
-    T & operator[](uint8_t index);
+    const T & front() const;
+    const T & operator[](uint8_t index) const;
     void pop();
     void remove(uint8_t index);
 };
@@ -27,7 +27,7 @@ PriorityQueue_t<T, MaxSize>::PriorityQueue_t() {
 }
 
 template<class T, uint8_t MaxSize>
-uint8_t PriorityQueue_t<T, MaxSize>::size() {
+uint8_t PriorityQueue_t<T, MaxSize>::size() const {
     return this->ActualSize;
 }
 
@@ -49,7 +49,7 @@ void PriorityQueue_t<T, MaxSize>::push(const T & task) {
 }
 
 template<class T, uint8_t MaxSize>
-T & PriorityQueue_t<T, MaxSize>::front() {
+const T & PriorityQueue_t<T, MaxSize>::front() const {
     return this->elements[this->size()-1];
 }
 
@@ -59,7 +59,7 @@ void PriorityQueue_t<T, MaxSize>::pop() {
 }
 
 template<class T, uint8_t MaxSize>
-T & PriorityQueue_t<T, MaxSize>::operator[](uint8_t index) {
+const T & PriorityQueue_t<T, MaxSize>::operator[](uint8_t index) const {
     return this->elements[index];
 }
 

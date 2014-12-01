@@ -5,7 +5,7 @@ PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
 
 void sys::boot() {
     InitSysTick();
-    TaskStruct_t & t = TaskQueue.front();
+    TaskStruct_t t = TaskQueue.front();
     ContextSet(&t.lowLevel);
 
     // Now we will execute this task (jump to first task)
