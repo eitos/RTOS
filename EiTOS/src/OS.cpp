@@ -29,7 +29,7 @@ void sys::taskCreate(TaskHandler_t taskHandler,
 void sys::ProcSysTick() {
     ContextGet(&ActrualRunningTaskStruct.lowLevel);
     TaskQueue.push(ActrualRunningTaskStruct);
-    ActrualRunningTaskStruct = TaskQueue.front();    
+    ActrualRunningTaskStruct = TaskQueue.front();
     TaskQueue.pop();
     ContextSet(&ActrualRunningTaskStruct.lowLevel);
 }
