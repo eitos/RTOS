@@ -2,6 +2,7 @@
 #include <port/port.hpp>
 
 PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
+TaskStruct_t ActrualRunningTaskStruct;
 
 void sys::boot() {
     InitSysTick();
@@ -26,10 +27,8 @@ void sys::taskCreate(TaskHandler_t taskHandler,
 
 
 void sys::ProcSysTick() {
-    TaskStruct_t now;
-    now = TaskQueue.front();
+    TaskQueue.push(ActrualRunningTaskStruct);
+    ActrualRunningTaskStruct = TaskQueue.front();
     TaskQueue.pop();
-    TaskQueue.push(now);
-    now = TaskQueue.front();
-    ContextSet(&now.lowLevel);
+    ContextSet(&ActrualRunningTaskStruct.lowLevel);
 }
