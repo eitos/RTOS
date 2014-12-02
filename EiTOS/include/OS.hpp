@@ -1,9 +1,7 @@
 #ifndef OS_HPP_
 #define OS_HPP_
 
-#include <port/port.hpp>
 #include "priorityQueue.hpp"
-#include "swapTable.hpp"
 #include "task.hpp"
 #include "EiTOSConfig.hpp"
 

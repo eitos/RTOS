@@ -1,7 +1,7 @@
 #ifndef __TASK_HPP__
 #define __TASK_HPP__
 
-#include "port/TaskLowLevel.hpp"
+#include "port/port.hpp"
 #include "EiTOSConfig.hpp"
 #include "priorityQueue.hpp"
 
