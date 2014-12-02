@@ -8,7 +8,7 @@ struct mutex {
     mutex();
     void give();
     void take();
-    void take(uint32_t timeout);
+    bool take(uint32_t timeout_ms);
 };
 
 #endif /* __MUTEX_HPP__ */
