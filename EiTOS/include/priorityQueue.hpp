@@ -1,9 +1,8 @@
 #ifndef __PRIORITYQUEUE_HPP__
 #define __PRIORITYQUEUE_HPP__
 
-#include "task.hpp"
+#include <inttypes.h>
 #include "EiTOSConfig.hpp"
-
 
 template<class T, uint8_t MaxSize>
 class PriorityQueue_t {
@@ -13,10 +12,12 @@ class PriorityQueue_t {
  public:
     PriorityQueue_t();
     void init();
-    uint8_t size();
+    uint8_t size() const;
     void push(const T & task);
-    T & front();
+    const T & front() const;
+    const T & operator[](uint8_t index) const;
     void pop();
+    void remove(uint8_t index);
 };
 
 
@@ -26,14 +27,14 @@ PriorityQueue_t<T, MaxSize>::PriorityQueue_t() {
 }
 
 template<class T, uint8_t MaxSize>
-uint8_t PriorityQueue_t<T, MaxSize>::size() {
+uint8_t PriorityQueue_t<T, MaxSize>::size() const {
     return this->ActualSize;
 }
 
 template<class T, uint8_t MaxSize>
 void PriorityQueue_t<T, MaxSize>::push(const T & task) {
-    const int8_t LastPosition = this->size();
-    int8_t InsertionPosition = LastPosition;
+    const uint8_t LastPosition = this->size();
+    uint8_t InsertionPosition = LastPosition;
     for (int8_t i = 0; i < this->size(); ++i) {
         if (!(this->elements[i] < task)) {
             InsertionPosition = i;
@@ -48,12 +49,25 @@ void PriorityQueue_t<T, MaxSize>::push(const T & task) {
 }
 
 template<class T, uint8_t MaxSize>
-T & PriorityQueue_t<T, MaxSize>::front() {
+const T & PriorityQueue_t<T, MaxSize>::front() const {
     return this->elements[this->size()-1];
 }
 
 template<class T, uint8_t MaxSize>
 void PriorityQueue_t<T, MaxSize>::pop() {
+    this->ActualSize--;
+}
+
+template<class T, uint8_t MaxSize>
+const T & PriorityQueue_t<T, MaxSize>::operator[](uint8_t index) const {
+    return this->elements[index];
+}
+
+template<class T, uint8_t MaxSize>
+void PriorityQueue_t<T, MaxSize>::remove(uint8_t index) {
+    for (uint8_t i = index; i < this->ActualSize; i++) {
+        this->elements[i] = this->elements[i+1];
+    }
     this->ActualSize--;
 }
 

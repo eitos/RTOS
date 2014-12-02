@@ -1,6 +1,6 @@
 MAIN_DIR = ../EiTOS
 GTEST_DIR = gtest-1.7.0
-SOURCES  = $(MAIN_DIR)/src/OS.cpp
+SOURCES  = $(MAIN_DIR)/src/OS.cpp $(MAIN_DIR)/src/mutex.cpp $(MAIN_DIR)/ports/mock/port/port.cpp
 TESTS = tests_run_all.cpp priorityQueue.cpp swapTable.cpp
 
 PORT_INCLUDE = ../EiTOS/ports/mock/

@@ -11,7 +11,7 @@ TEST(PriorityQueueTest, ints) {
     }
     EXPECT_EQ(Q.size(), 10);
     for ( int i = 9; i >= 0; --i ) {
-        int & t = Q.front();
+        const int & t = Q.front();
         EXPECT_EQ(t, i);
         Q.pop();
     }
@@ -30,11 +30,11 @@ TEST(PriorityQueueTest, test1) {
     test1 elem;
     for ( int i = 0; i < 10; ++i ) {
       elem.val = i;
-        Q.push(elem);
+      Q.push(elem);
     }
     EXPECT_EQ(Q.size(), 10);
     for ( int i = 9; i >= 0; --i ) {
-        test1 & t = Q.front();
+        const test1 & t = Q.front();
         EXPECT_EQ(t.val, i);
         Q.pop();
     }
@@ -57,7 +57,7 @@ TEST(PriorityQueueTest, test2) {
     }
     EXPECT_EQ(Q.size(), 10);
     for ( int i = 0; i < 10; ++i ) {
-        test2 & t = Q.front();
+        const test2 & t = Q.front();
         EXPECT_EQ(t.val, i);
         Q.pop();
     }
@@ -80,7 +80,7 @@ TEST(PriorityQueueTest, test2Diff) {
     EXPECT_EQ(Q.size(), 20);
     for ( int i = 0; i < 10; ++i ) {
       for ( int j = 0; j < 2; ++j ) {
-          test2 & t = Q.front();
+          const test2 & t = Q.front();
           EXPECT_EQ(t.val, i);
           Q.pop();
       }
@@ -105,7 +105,7 @@ TEST(PriorityQueueTest, test3) {
     }
     EXPECT_EQ(Q.size(), 10);
     for ( int i = 9; i >= 0; --i ) {
-        test3 & t = Q.front();
+        const test3 & t = Q.front();
         EXPECT_EQ(t.val, i);
         EXPECT_EQ(t.id, i);
         Q.pop();
@@ -123,7 +123,7 @@ TEST(PriorityQueueTest, test3smallSameVals) {
     }
     EXPECT_EQ(Q.size(), 10);
     for ( int i = 0; i < 10; ++i ) {
-        test3 & t = Q.front();
+        const test3 & t = Q.front();
         EXPECT_EQ(t.val, 1);
         EXPECT_EQ(t.id, i);
         Q.pop();
@@ -135,20 +135,20 @@ TEST(PriorityQueueTest, test3diffVals) {
     PriorityQueue_t<test3, 100> Q;
     test3 elem;
     for ( int i = 0; i < 10; ++i ) {
-      for ( int j = 0; j < 10; ++j ) {
-        elem.id = i;
-        elem.val = j;
-          Q.push(elem);
-      }
+        for ( int j = 0; j < 10; ++j ) {
+            elem.id = i;
+            elem.val = j;
+            Q.push(elem);
+        }
     }
     EXPECT_EQ(Q.size(), 100);
     for ( int i = 9; i >= 0; --i ) {
-      for ( int j = 0; j < 10; ++j ) {
-        test3 & t = Q.front();
-          EXPECT_EQ(t.val, i);
-          EXPECT_EQ(t.id, j);
-          Q.pop();
-      }
+        for ( int j = 0; j < 10; ++j ) {
+            const test3 & t = Q.front();
+            EXPECT_EQ(t.val, i);
+            EXPECT_EQ(t.id, j);
+            Q.pop();
+        }
     }
     EXPECT_EQ(Q.size(), 0);
 }
@@ -157,17 +157,149 @@ TEST(PriorityQueueTest, test3diffVals) {
 TEST(PriorityQueueTest, TaskStruct) {
     PriorityQueue_t<TaskStruct_t, 100> Q;
     TaskStruct_t elem;
+    elem.blockingMutexNr = 0;
     for ( int i = 0; i < 10; ++i ) {
         for ( int j = 0; j < 10; ++j ) {
             Q.push(elem);
-      }
+        }
     }
     EXPECT_EQ(Q.size(), 100);
     for ( int i = 9; i >= 0; --i ) {
         for ( int j = 0; j < 10; ++j ) {
-            TaskStruct_t & t = Q.front();
+            const TaskStruct_t & t = Q.front();
             Q.pop();
       }
     }
+    EXPECT_EQ(Q.size(), 0);
+}
+
+TEST(PriorityQueueTest, TaskStructMutex) {
+    PriorityQueue_t<TaskStruct_t, 100> Q;
+    TaskStruct_t elem;
+    for ( int i = 0; i < 10; ++i ) {
+        elem.blockingMutexNr = i;
+        for ( int j = 0; j < 10; ++j ) {
+            elem.priority = j;
+            Q.push(elem);
+        }
+    }
+    EXPECT_EQ(Q.size(), 100);
+    for ( int i = 0; i < 10; ++i ) {
+        for ( int j = 9; j >= 0; --j ) {
+            const TaskStruct_t & t = Q.front();
+            EXPECT_EQ(t.priority, j);
+            EXPECT_EQ(t.blockingMutexNr, i);
+            Q.pop();
+        }
+    }
+    EXPECT_EQ(Q.size(), 0);
+}
+
+TEST(PriorityQueueTest, TaskStructEqualNorm) {
+    PriorityQueue_t<TaskStruct_t, 100> Q;
+    TaskStruct_t elem;
+    elem.blockingMutexNr = elem.priority = 0;
+    for ( int i = 0; i < 100; ++i ) {
+        elem.lowLevel.Stack = i;
+        Q.push(elem);
+    }
+    EXPECT_EQ(Q.size(), 100);
+    for ( int i = 0; i < 100; ++i ) {
+        const TaskStruct_t & t = Q.front();
+        EXPECT_EQ(t.priority, 0);
+        EXPECT_EQ(t.blockingMutexNr, 0);
+        EXPECT_EQ(t.lowLevel.Stack, i);
+        Q.pop();
+    }
+    EXPECT_EQ(Q.size(), 0);
+}
+
+TEST(PriorityQueueTest, TaskStructOperatorBrace) {
+    PriorityQueue_t<TaskStruct_t, 54> Q;
+    TaskStruct_t elem;
+    for ( int i = 0; i < 3; ++i ) {
+        elem.blockingMutexNr = i;
+        for ( int j = 0; j < 3; ++j ) {
+            elem.priority = j;
+            for ( int k = 0; k < 3; ++k ) {
+                elem.lowLevel.Stack = k;
+                Q.push(elem);
+            }
+        }
+    }
+    for ( int i = 2; i >= 0; --i ) {
+        elem.blockingMutexNr = i;
+        for ( int j = 2; j >= 0; --j ) {
+            elem.priority = j;
+            for ( int k = 0; k < 3; ++k ) {
+                elem.lowLevel.Stack = k;
+                Q.push(elem);
+            }
+        }
+    }
+    EXPECT_EQ(Q.size(), 54);
+    int index = 0;
+    for ( int i = 0; i < 3; ++i ) {
+        for ( int j = 0; j < 3; ++j ) {
+            for ( int n = 0; n < 2; ++n ) {
+                for ( int k = 0; k < 3; ++k ) {
+                    elem = Q[index++];
+                    EXPECT_EQ(elem.blockingMutexNr, 2-i);
+                    EXPECT_EQ(elem.priority, j);
+                    EXPECT_EQ(elem.lowLevel.Stack, 2-k);
+                }
+            }
+        }
+    }
+    EXPECT_EQ(Q.size(), 54);
+    while (Q.size() > 0) Q.pop();
+    EXPECT_EQ(Q.size(), 0);
+}
+
+TEST(PriorityQueueTest, TaskStructRemoval) {
+    PriorityQueue_t<TaskStruct_t, 100> Q;
+    TaskStruct_t elem;
+    elem.blockingMutexNr = elem.priority = 0;
+    for ( int i = 0; i < 100; ++i ) {
+        elem.lowLevel.Stack = i;
+        Q.push(elem);
+    }
+    EXPECT_EQ(Q.size(), 100);
+    for ( int i = 0; i < 99; ++i ) {
+        const TaskStruct_t & t = Q[0];
+        TaskStruct_t t2 = Q[0];
+        EXPECT_EQ(Q[0].priority, 0);
+        EXPECT_EQ(Q[0].blockingMutexNr, 0);
+        EXPECT_EQ(Q[0].lowLevel.Stack, 99-i);
+
+        EXPECT_EQ(t.priority, 0);
+        EXPECT_EQ(t.blockingMutexNr, 0);
+        EXPECT_EQ(t.lowLevel.Stack, 99-i);
+
+        EXPECT_EQ(t2.priority, 0);
+        EXPECT_EQ(t2.blockingMutexNr, 0);
+        EXPECT_EQ(t2.lowLevel.Stack, 99-i);
+
+        Q.remove(0);
+        TaskStruct_t t3 = Q[0];
+        Q.remove(0);
+        Q.push(t3);
+        Q.push(t2);
+
+        EXPECT_EQ(Q[0].priority, 0);
+        EXPECT_EQ(Q[0].blockingMutexNr, 0);
+        EXPECT_EQ(Q[0].lowLevel.Stack, 99-i);
+
+        EXPECT_EQ(t.priority, 0);
+        EXPECT_EQ(t.blockingMutexNr, 0);
+        EXPECT_EQ(t.lowLevel.Stack, 99-i);
+
+        EXPECT_EQ(t2.priority, 0);
+        EXPECT_EQ(t2.blockingMutexNr, 0);
+        EXPECT_EQ(t2.lowLevel.Stack, 99-i);
+        Q.remove(0);
+    }
+    EXPECT_EQ(Q.size(), 1);
+    Q.remove(0);
     EXPECT_EQ(Q.size(), 0);
 }
