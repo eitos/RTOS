@@ -12,9 +12,13 @@ extern uint8_t* CurrentTaskStackAdress;
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t Task, uint16_t StackSize);
 
+uint16_t TaskDeallocate(TaskLowLevel_t* Task, uint16_t LowestBytes);
+
 void ContextGet(TaskLowLevel_t* Current);
 
 void ContextSet(TaskLowLevel_t* Next);
+
+uint16_t TaskGetHeap(TaskLowLevel_t* Task);
 
 inline void __attribute__((always_inline)) ContextSave() {
     asm volatile("push r0			\n\t"  // save r0 on stack
@@ -119,7 +123,8 @@ inline void __attribute__((always_inline)) SwitchToOsStack() {
 
 inline void __attribute__((always_inline)) ExecutePendingTask() {
     ContextRestore();
-    asm volatile("ret");
+    asm volatile("sei	\n\t"  // enable interrupts
+    "ret				\n\t"); // return form function
 }
 
 void ProcSysTickWrapper();
@@ -138,6 +143,8 @@ void __attribute__((naked)) TriggerSysTick();
 void ResetSysTick();
 
 void InitSysTick();
+
+void TaskLowLevelKiller();
 
 extern void ProcSysTick();
 
