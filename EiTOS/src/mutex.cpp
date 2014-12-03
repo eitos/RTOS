@@ -46,4 +46,5 @@ void mutex::take() {
 }
 
 bool mutex::take(uint32_t timeout) {
+    return false;
 }
