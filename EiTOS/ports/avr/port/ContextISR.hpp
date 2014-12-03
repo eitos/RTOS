@@ -122,7 +122,18 @@ inline void __attribute__((always_inline)) ExecutePendingTask() {
     asm volatile("ret");
 }
 
-void TriggerSysTick();
+void ProcSysTickWrapper();
+
+inline void __attribute__((always_inline)) SysTick() {
+    ContextSave();
+    SwitchToOsStack();
+
+    ProcSysTickWrapper();
+
+    ContextRestore();
+}
+
+void __attribute__((naked)) TriggerSysTick();
 
 void ResetSysTick();
 
