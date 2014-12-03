@@ -32,15 +32,23 @@ void Task3() {
     }
 }
 
+void Task4() {
+    for(uint8_t i=0 ; i < 10 ; i++){
+		PORTB ^= (1 << PB3);
+        _delay_ms(200);
+	}
+}
+
 int main() {
     // TP ONLY BEGIN
     serial.init(9600U);
-    DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2);
+    DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
     PORTB = 0;
 
     sys::taskCreate(&Task1, 0, 0xFF);
     sys::taskCreate(&Task2, 0, 0x20);
     sys::taskCreate(&Task3, 0, 0x20);
+	sys::taskCreate(&Task4, 0, 0x20);
 
 
     // TP ONLY END
