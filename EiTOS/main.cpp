@@ -6,6 +6,8 @@
 
 Serial serial;
 
+mutex muteks_01;
+
 void Task1() {
     while (1) {
         static uint8_t i = 0;
@@ -37,8 +39,8 @@ int main() {
     PORTB = 0;
 
     sys::taskCreate(&Task1, 0, 0xFF);
-    sys::taskCreate(&Task2, 0, 0x10);
-    sys::taskCreate(&Task3, 0, 0x10);
+    sys::taskCreate(&Task2, 0, 0x20);
+    sys::taskCreate(&Task3, 0, 0x20);
 
 
     // TP ONLY END

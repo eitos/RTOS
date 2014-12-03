@@ -69,8 +69,10 @@ void ContextSet(TaskLowLevel_t * Next) {
     CurrentTaskStackAdress = Next->StackStart;
 }
 
-void TriggerSysTick() {
-    TCNT0 = OCR0A-1;
+void __attribute__((naked)) TriggerSysTick() {
+    SysTick();
+    asm volatile("sei	\n\t"  // enable interrupts
+    "ret				\n\t"); // return form function
 }
 
 void ResetSysTick() {
@@ -85,12 +87,11 @@ void InitSysTick() {
     TIMSK0 = (1 << OCIE0A);
 }
 
-ISR(TIMER0_COMPA_vect, ISR_NAKED) {
-    ContextSave();
-    SwitchToOsStack();
-
+void ProcSysTickWrapper() {
     sys::ProcSysTick();
+}
 
-    ContextRestore();
+ISR(TIMER0_COMPA_vect, ISR_NAKED) {
+    SysTick();
     asm volatile("reti");
 }
