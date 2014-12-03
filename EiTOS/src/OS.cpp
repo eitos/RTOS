@@ -6,8 +6,9 @@ TaskStruct_t ActrualRunningTaskStruct;
 
 void sys::boot() {
     InitSysTick();
-    TaskStruct_t t = TaskQueue.front();
-    ContextSet(&t.lowLevel);
+    ActrualRunningTaskStruct = TaskQueue.front();
+	TaskQueue.pop();
+    ContextSet(&ActrualRunningTaskStruct.lowLevel);
 
     // Now we will execute this task (jump to first task)
     ExecutePendingTask();  // This will also enable interrupts
