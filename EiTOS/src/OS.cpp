@@ -7,7 +7,7 @@ TaskStruct_t ActrualRunningTaskStruct;
 void sys::boot() {
     InitSysTick();
     ActrualRunningTaskStruct = TaskQueue.front();
-	TaskQueue.pop();
+    TaskQueue.pop();
     ContextSet(&ActrualRunningTaskStruct.lowLevel);
 
     // Now we will execute this task (jump to first task)
