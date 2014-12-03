@@ -14,7 +14,7 @@ class TaskStruct_t {
     TaskLowLevel_t lowLevel;
     uint8_t priority;
     uint8_t blockingMutexNr;
-	TaskState_t TaskState;
+    TaskState_t TaskState;
     uint8_t Norm() const {
         return this->priority;
     }
