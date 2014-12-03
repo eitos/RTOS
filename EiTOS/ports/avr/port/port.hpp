@@ -7,5 +7,6 @@
 #include "StackStructure.hpp"
 #include "TaskLowLevel.hpp"
 #include "ContextISR.hpp"
+#include <avr/io.h>
 
 #endif /* PORT_HPP_ */
