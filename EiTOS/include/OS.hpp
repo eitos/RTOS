@@ -14,6 +14,7 @@ namespace sys {
     void taskCreate(TaskHandler_t taskHandler,
                     uint8_t priority,
                     uint16_t StackSize);
+	void ActualTaskKill();
 };
 
 #endif /* OS_HPP_ */
