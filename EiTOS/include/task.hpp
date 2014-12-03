@@ -7,7 +7,10 @@
 
 const uint8_t TASK_RUNNING = 0;
 
-typedef enum{TASK_S_RUNNING, TASK_S_MUTEX, TASK_S_WAIT, TASK_S_KILL} TaskState_t;
+typedef enum {TASK_S_RUNNING, 
+              TASK_S_MUTEX, 
+              TASK_S_WAIT, 
+              TASK_S_KILL} TaskState_t;
 
 class TaskStruct_t {
  public:

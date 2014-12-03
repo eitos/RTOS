@@ -16,7 +16,7 @@ reinterpret_cast<uint8_t *>(RAMEND - OS_STACK_SIZE);
 
 void TaskLowLevelKiller() {
     sys::ActualTaskKill();
-    while(1) {}
+    while (1) {}
 }
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
@@ -25,7 +25,9 @@ TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
     // allocate memory for task
     LastCreatedTaskStackAdress -= (stackSize + TASK_HEAP_OFFSET);
     *(TaskStackStart - KILL_LOW_OFFSET) = ((uint16_t)(&TaskLowLevelKiller));
-    *(TaskStackStart - KILL_HIGH_OFFSET) = ((uint16_t)(&TaskLowLevelKiller)) >> 8;
+    *(TaskStackStart - KILL_HIGH_OFFSET) =
+	    ((uint16_t)(&TaskLowLevelKiller)) >> 8;
+
     *(TaskStackStart - RETI_LOW_OFFSET) = ((uint16_t)taskHandler);
     *(TaskStackStart - RETI_HIGH_OFFSET) = ((uint16_t)taskHandler) >> 8;
     // Set I-bit in order to have interrupts enabled

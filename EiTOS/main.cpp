@@ -33,7 +33,7 @@ void Task3() {
 }
 
 void Task4() {
-    for(uint8_t i=0 ; i < 10 ; i++){
+    for (uint8_t i = 0 ; i < 10 ; i++) {
         PORTB ^= (1 << PB3);
         _delay_ms(200);
     }

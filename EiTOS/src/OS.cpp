@@ -36,7 +36,7 @@ void sys::ProcSysTick() {
     ContextSet(&ActrualRunningTaskStruct.lowLevel);
 }
 
-void sys::ActualTaskKill(){
+void sys::ActualTaskKill() {
     // run next task - not saving actual task will cause it to be removed
     ActrualRunningTaskStruct = TaskQueue.front();
     TaskQueue.pop();
