@@ -18,7 +18,8 @@ TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
 
     // allocate memory for task
     LastCreatedTaskStackAdress -= (stackSize + TASK_HEAP_OFFSET);
-
+    *(TaskStackStart - KILL_LOW_OFFSET) = ((uint16_t)(&TaskLowLevelKiller));
+    *(TaskStackStart - KILL_HIGH_OFFSET) = ((uint16_t)(&TaskLowLevelKiller)) >> 8;
     *(TaskStackStart - RETI_LOW_OFFSET) = ((uint16_t)taskHandler);
     *(TaskStackStart - RETI_HIGH_OFFSET) = ((uint16_t)taskHandler) >> 8;
     // Set I-bit in order to have interrupts enabled
@@ -58,7 +59,23 @@ TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
 
     TaskLowLevel_t task;
     task.StackStart = static_cast<uint8_t *>(TaskStackStart - TASK_HEAP_OFFSET);
+	task.StackSize = stackSize + TASK_HEAP_OFFSET;
     return task;  // return address of stack heap in ram copy
+}
+
+uint16_t TaskDeallocate(TaskLowLevel_t* Task, uint16_t LowestBytes) {
+	uint8_t* TargetRamAddress = Task->StackStart;
+	uint8_t* SourceRamAddress = TargetRamAddress - Task->StackSize;
+	while(SourceRamAddress>=(uint8_t*)LowestBytes) {
+		*TargetRamAddress = *SourceRamAddress;
+		TargetRamAddress--;
+		SourceRamAddress--;
+	}
+	return Task->StackSize;
+}
+
+void TaskOffsetStack(TaskLowLevel_t* Task, uint16_t Offset){
+	Task->StackStart-=Offset;
 }
 
 void ContextGet(TaskLowLevel_t * Current) {
@@ -67,6 +84,10 @@ void ContextGet(TaskLowLevel_t * Current) {
 
 void ContextSet(TaskLowLevel_t * Next) {
     CurrentTaskStackAdress = Next->StackStart;
+}
+
+uint16_t TaskGetHeap(const TaskLowLevel_t* Task) {
+	return (uint16_t)(Task->StackStart)-Task->StackSize;
 }
 
 void __attribute__((naked)) TriggerSysTick() {
@@ -89,6 +110,11 @@ void InitSysTick() {
 
 void ProcSysTickWrapper() {
     sys::ProcSysTick();
+}
+
+void TaskLowLevelKiller() {
+	sys::ActualTaskKill();
+    while(1) {}
 }
 
 ISR(TIMER0_COMPA_vect, ISR_NAKED) {
