@@ -26,7 +26,7 @@ TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
     LastCreatedTaskStackAdress -= (stackSize + TASK_HEAP_OFFSET);
     *(TaskStackStart - KILL_LOW_OFFSET) = ((uint16_t)(&TaskLowLevelKiller));
     *(TaskStackStart - KILL_HIGH_OFFSET) =
-	    ((uint16_t)(&TaskLowLevelKiller)) >> 8;
+        ((uint16_t)(&TaskLowLevelKiller)) >> 8;
 
     *(TaskStackStart - RETI_LOW_OFFSET) = ((uint16_t)taskHandler);
     *(TaskStackStart - RETI_HIGH_OFFSET) = ((uint16_t)taskHandler) >> 8;
