@@ -3,6 +3,7 @@
 
 #include "priorityQueue.hpp"
 #include "task.hpp"
+#include "mutex.hpp"
 #include "EiTOSConfig.hpp"
 
 extern PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
