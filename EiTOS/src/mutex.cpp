@@ -1,6 +1,7 @@
 #include <inttypes.h>
 
 #include "mutex.hpp"
+#include "OS.hpp"
 #include "task.hpp"
 #include "EiTOSConfig.hpp"
 #include "port/port.hpp"
@@ -33,17 +34,18 @@ void mutex::give() {
 }
 
 static inline void lockTaskByMutex(uint8_t mutexNr) {
-    TaskStruct_t task = TaskQueue.front();
-    TaskQueue.pop();
-    task.blockingMutexNr = mutexNr;
-    TaskQueue.push(task);
+    ActrualRunningTaskStruct.blockingMutexNr = mutexNr;
 }
 
 void mutex::take() {
-    MutexTaken[this->nr] = true;
-    lockTaskByMutex(this->nr);
-    TriggerSysTick();
+    if ( MutexTaken[this->nr] == false ) {
+        MutexTaken[this->nr] = true;
+    } else {
+        lockTaskByMutex(this->nr);
+        TriggerSysTick();
+    }
 }
 
 bool mutex::take(uint32_t timeout) {
+    return false;  // TODO(GG PR): timer.
 }

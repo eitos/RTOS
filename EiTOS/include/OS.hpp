@@ -7,6 +7,7 @@
 #include "EiTOSConfig.hpp"
 
 extern PriorityQueue_t<TaskStruct_t, MAX_TASKS> TaskQueue;
+extern TaskStruct_t ActrualRunningTaskStruct;
 
 namespace sys {
     void ProcSysTick();
