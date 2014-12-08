@@ -11,7 +11,6 @@ typedef void ( * TaskHandler_t )();
 
 struct TaskLowLevel_t {
     uint8_t* StackStart;
-    uint16_t StackSize;
 };
 
 TaskLowLevel_t TaskAllocate(TaskHandler_t Task, uint16_t StackSize);
