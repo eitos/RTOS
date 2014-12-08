@@ -188,6 +188,9 @@
     <Compile Include="ports\avr\port\StackStructure.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ports\avr\port\TaskLowLevel.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ports\avr\port\TaskLowLevel.hpp">
       <SubType>compile</SubType>
     </Compile>

@@ -13,8 +13,6 @@ struct TaskLowLevel_t {
     uint8_t* StackStart;
 };
 
-void ContextGet(TaskLowLevel_t* Current);
-
-void ContextSet(TaskLowLevel_t* Next);
+TaskLowLevel_t TaskAllocate(TaskHandler_t Task, uint16_t StackSize);
 
 #endif

@@ -34,3 +34,16 @@ void sys::ProcSysTick() {
     TaskQueue.pop();
     ContextSet(&ActrualRunningTaskStruct.lowLevel);
 }
+
+void sys::ActualTaskKill() {
+    // run next task - not saving actual task will cause it to be removed
+    ActrualRunningTaskStruct = TaskQueue.front();
+    TaskQueue.pop();
+    ContextSet(&ActrualRunningTaskStruct.lowLevel);
+
+    // Now we will execute this task (jump to first task)
+    ExecutePendingTask();  // This will also enable interrupts
+
+    // This will never execute, aber zicher ist zicher!
+    while (1) {}
+}
