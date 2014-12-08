@@ -23,7 +23,6 @@ void sys::taskCreate(TaskHandler_t taskHandler,
     TaskStruct_t task;
     task.priority = priority;
     task.lowLevel = TaskAllocate(taskHandler, StackSize);
-    task.TaskState = TASK_S_RUNNING;
     TaskQueue.push(task);
 }
 

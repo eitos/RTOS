@@ -67,6 +67,5 @@ TaskLowLevel_t TaskAllocate(TaskHandler_t taskHandler, uint16_t stackSize) {
 
     TaskLowLevel_t task;
     task.StackStart = static_cast<uint8_t *>(TaskStackStart - TASK_HEAP_OFFSET);
-    task.StackSize = stackSize + TASK_HEAP_OFFSET;
     return task;  // return address of stack heap in ram copy
 }
