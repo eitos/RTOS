@@ -33,9 +33,9 @@ void mutex::give() {
     if ( MutexTaken[this->nr] == false )
         return;
     MutexTaken[this->nr] = false;
-    if( unlockTasksByMutex(this->nr) > 0 ) {
+    if ( unlockTasksByMutex(this->nr) > 0 ) {
         TriggerSysTick();
-    }        
+    }
 }
 
 static inline void lockTaskByMutex(uint8_t mutexNr) {
@@ -48,7 +48,7 @@ void mutex::take() {
     } else {
         lockTaskByMutex(this->nr);
         TriggerSysTick();
-        //after giving the mutex we will land here
+        // after giving the mutex we will land here
         MutexTaken[this->nr] = true;
     }
 }

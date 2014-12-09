@@ -308,21 +308,20 @@ TEST(PriorityQueueTest, TestMutexes) {
     PriorityQueue_t<TaskStruct_t, 10> Q;
     TaskStruct_t elem;
 
-    for(int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 2; ++i) {
         elem.blockingMutexNr = i;
         elem.priority = i;
         Q.push(elem);
     }
-    for(int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 2; ++i) {
         elem = Q.front();
         Q.pop();
-        printf("(%d %d)\n",elem.blockingMutexNr, elem.priority);
         EXPECT_EQ(elem.blockingMutexNr, i);
     }
 
     EXPECT_EQ(Q.size(), 0);
-	
-	elem.blockingMutexNr = 0;
+
+    elem.blockingMutexNr = 0;
     elem.priority = 0;
     Q.push(elem);
 

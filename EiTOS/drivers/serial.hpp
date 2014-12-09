@@ -12,7 +12,9 @@ class Serial {
         DDRD |= (1 << PD1);
         PORTD |= (1 << PD1);
         uint16_t ubrr;
-        ubrr = ((float)((float)(F_CPU / 16.) / (baudRate))) - 0.5;
+        ubrr = static_cast<uint16_t>((
+               static_cast<float>(
+               static_cast<float>(F_CPU / 16.)/ (baudRate))) - 0.5);
         UBRR0H = static_cast<uint8_t>(ubrr >> 8);
         UBRR0L = static_cast<uint8_t>(ubrr);
         /* Enable receiver and transmitter */
