@@ -12,9 +12,7 @@ mutex serialMutex;
 
 void Task1() {
     static uint8_t count = 0;
-    while (1) {
-        PORTB ^= (1 << PB2);
-        
+    while (1) {        
         serialMutex.take();
         serial.printf("Test %d\r\n", count++);
         serialMutex.give();
@@ -30,20 +28,21 @@ void Task2() {
 
 void Task3() {
     while (1) {
-        PORTB ^= (1 << PB0);
+        PORTB ^= (1 << PB2);
         _delay_ms(200);
     }
 }
 
 void Task4() {
+    PORTB ^= (1 << PB0);
     mutex1.take();
-    for(uint8_t i = 0; i < 10; ++i) {
+    for(uint8_t i = 0; i < 50; ++i) {
         serialMutex.take();
         serial.printf("mutex taken %d!\n\r",i);
         serialMutex.give();
         
         PORTB ^= (1 << PB0);
-        _delay_ms(200);
+        _delay_ms(100);
     }
     mutex1.take(); //can't take second time - will halt here!
     while(1) {
