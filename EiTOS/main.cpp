@@ -10,70 +10,17 @@ Serial serial;
 mutex mutex1;
 mutex serialMutex;
 
-void Task1() {
-    static uint8_t count = 0;
-    while (1) {
-        serialMutex.take();
-        serial.printf("Test %d\r\n", count++);
-        serialMutex.give();
+void Task1(){
+    while(1){
+        _delay_ms(250);
+        PORTB ^= (1 << PB0)|(1 << PB1)|(1 << PB2);
     }
 }
 
-void Task2() {
-    while (1) {
-        PORTB ^= (1 << PB1);
-        _delay_ms(100);
-    }
-}
-
-void Task3() {
-    while (1) {
-        PORTB ^= (1 << PB2);
-        _delay_ms(200);
-    }
-}
-
-void Task4() {
-    PORTB ^= (1 << PB0);
-    mutex1.take();
-    for (uint8_t i = 0; i < 50; ++i) {
-        serialMutex.take();
-        serial.printf("mutex taken %d!\n\r", i);
-        serialMutex.give();
-
-        PORTB ^= (1 << PB0);
-        _delay_ms(100);
-    }
-    mutex1.take();  // can't take second time - will halt here!
-    while (1) {
-        serialMutex.take();
-        serial.printf("error !\n\r");
-        serialMutex.give();
-    }
-}
-
-
-void mainTask() {
-    mutex1.take();
-    serialMutex.give();
-    sys::taskCreate(&Task1, 1, 0xFF);
-    sys::taskCreate(&Task2, 1, 0x20);
-    sys::taskCreate(&Task3, 1, 0x20);
-    sys::taskCreate(&Task4, 2, 0x20);
-
-    for (uint8_t i = 20; i > 0; --i) {
-        serialMutex.take();
-        serial.printf("Waiting... %d\r\n", i);
-        serialMutex.give();
-
-        _delay_ms(50);
-    }
-    mutex1.give();  // will unlock Task4 - with higer priority
-
-    while (1) {
-        serialMutex.take();
-        serial.printf("idle task\n\r");
-        serialMutex.give();
+void Task2(){
+    while(1){
+        serial.printf("JAM ODBLOKOWAN!\r\n");
+        mutex1.take();
     }
 }
 
@@ -82,11 +29,21 @@ int main() {
     serial.printf("START\n\r");
     DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2);
     PORTB = 0;
-
-    sys::taskCreate(&mainTask, 1, 0xFF);
+    
+    TCCR1B |= (1 << WGM12)|(1 << CS12)|(1 << CS10);//CTC, presc 1024
+    OCR1A = 15625-1;//interrupt 1s
+    TIMSK1 |= (1 << OCIE1A);
+    
+    mutex1.take();
+    sys::taskCreate(&Task1, 1, 0xFF);
+    sys::taskCreate(&Task2, 1, 0xFF);
 
     serial.printf("System BOOT\n\r");
     sys::boot();
 
     return 0;
+}
+
+ISR(TIMER1_COMPA_vect){
+    mutex1.give();
 }
