@@ -303,3 +303,44 @@ TEST(PriorityQueueTest, TaskStructRemoval) {
     Q.remove(0);
     EXPECT_EQ(Q.size(), 0);
 }
+
+TEST(PriorityQueueTest, TestMutexes) {
+    PriorityQueue_t<TaskStruct_t, 10> Q;
+    TaskStruct_t elem;
+
+    for (int i = 0; i < 2; ++i) {
+        elem.blockingMutexNr = i;
+        elem.priority = i;
+        Q.push(elem);
+    }
+    for (int i = 0; i < 2; ++i) {
+        elem = Q.front();
+        Q.pop();
+        EXPECT_EQ(elem.blockingMutexNr, i);
+    }
+
+    EXPECT_EQ(Q.size(), 0);
+
+    elem.blockingMutexNr = 0;
+    elem.priority = 0;
+    Q.push(elem);
+
+    elem.blockingMutexNr = 1;
+    elem.priority = 1;
+    Q.push(elem);
+
+    EXPECT_EQ(Q.size(), 2);
+
+    elem = Q.front();
+    EXPECT_EQ(elem.blockingMutexNr, 0);
+    EXPECT_EQ(elem.priority, 0);
+    Q.pop();
+
+    elem = Q.front();
+    EXPECT_EQ(elem.blockingMutexNr, 1);
+    EXPECT_EQ(elem.priority, 1);
+    Q.pop();
+
+    EXPECT_EQ(Q.size(), 0);
+}
+

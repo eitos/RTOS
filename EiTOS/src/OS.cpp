@@ -22,6 +22,7 @@ void sys::taskCreate(TaskHandler_t taskHandler,
                      uint16_t StackSize) {
     TaskStruct_t task;
     task.priority = priority;
+    task.blockingMutexNr = 0;
     task.lowLevel = TaskAllocate(taskHandler, StackSize);
     TaskQueue.push(task);
 }

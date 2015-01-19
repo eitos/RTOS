@@ -1,17 +1,20 @@
 #include <stdarg.h>
 #include <stdio.h>
+#include <avr/io.h>
 
 class Serial {
  private:
     char buff[30];
 
  public:
-    void init(uint16_t baudRate) {
+    void init(uint32_t baudRate) {
         // TXD0 as output
         DDRD |= (1 << PD1);
         PORTD |= (1 << PD1);
         uint16_t ubrr;
-        ubrr = ((F_CPU / 16) / (baudRate)) - 1;
+        ubrr = static_cast<uint16_t>((
+               static_cast<float>(
+               static_cast<float>(F_CPU / 16.)/ (baudRate))) - 0.5);
         UBRR0H = static_cast<uint8_t>(ubrr >> 8);
         UBRR0L = static_cast<uint8_t>(ubrr);
         /* Enable receiver and transmitter */
