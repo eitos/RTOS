@@ -1,56 +1,60 @@
 #include <avr/io.h>
 #include <util/delay.h>
-#include <OS.hpp>
-#include <avr/interrupt.h>
+#include <stdio.h>
 
-#include "../drivers/serial.hpp"
+#include "OS.hpp"
 
-Serial serial;
-
-mutex mutex1;
-mutex serialMutex;
-
+extern "C" {
+	#include "HD44780.h"
+};
 void Task1() {
-    while (1) {
-        _delay_ms(250);
-        PORTB ^= (1 << PB0)|(1 << PB1)|(1 << PB2);
-    }
+	while (1) {
+		PORTB ^= (1 << PB2);
+		_delay_ms(50);
+	}
 }
 
 void Task2() {
-    while (1) {
-        serial.printf("JAM ODBLOKOWAN!\r\n");
-        mutex1.take();
-    }
+	while (1) {
+		PORTB ^= (1 << PB1);
+		_delay_ms(100);
+	}
 }
 
-void Task4() {
-    for (uint8_t i = 0 ; i < 10 ; i++) {
-        PORTB ^= (1 << PB3);
-        _delay_ms(200);
-    }
+void Task3() {
+	while (1) {
+		PORTB ^= (1 << PB0);
+		_delay_ms(200);
+	}
+}
+
+void Task4(){
+	LCD_Initalize();
+	LCD_WriteText("Witaj EITOS");
+	uint8_t i=0;
+	while(1){
+		char temp[20];
+		sprintf(temp, "Iter: %03d", i++);
+		LCD_GoTo(0,1);
+		LCD_WriteText(temp);
+		_delay_ms(250);
+	}
 }
 
 int main() {
-    serial.init(115200U);
-    serial.printf("START\n\r");
-    DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2);
-    PORTB = 0;
+	// TP ONLY BEGIN
+	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
+	PORTB = 0;
 
-    TCCR1B |= (1 << WGM12)|(1 << CS12)|(1 << CS10);  // CTC, presc 1024
-    OCR1A = 15625-1;  // interrupt 1s
-    TIMSK1 |= (1 << OCIE1A);
+	sys::taskCreate(&Task1, 0, 0x10);
+	sys::taskCreate(&Task2, 0, 0x10);
+	sys::taskCreate(&Task3, 0, 0x10);
+	sys::taskCreate(&Task4, 0, 0x50);
 
-    mutex1.take();
-    sys::taskCreate(&Task1, 1, 0xFF);
-    sys::taskCreate(&Task2, 1, 0xFF);
 
-    serial.printf("System BOOT\n\r");
-    sys::boot();
+	// TP ONLY END
 
-    return 0;
-}
+	sys::boot();
 
-ISR(TIMER1_COMPA_vect) {
-    mutex1.give();
+	return 0;
 }
