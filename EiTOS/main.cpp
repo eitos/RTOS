@@ -7,6 +7,9 @@
 extern "C" {
 	#include "HD44780.h"
 };
+
+mutex LCD_mtx;
+
 void Task1() {
 	while (1) {
 		PORTB ^= (1 << PB2);
@@ -29,14 +32,33 @@ void Task3() {
 }
 
 void Task4(){
+	LCD_mtx.take();
 	LCD_Initalize();
-	LCD_WriteText("Witaj EITOS");
+	LCD_mtx.give();
 	uint8_t i=0;
 	while(1){
 		char temp[20];
-		sprintf(temp, "Iter: %03d", i++);
+		sprintf(temp, "A Iter: %03d", i++);
+		LCD_mtx.take();
 		LCD_GoTo(0,1);
 		LCD_WriteText(temp);
+		LCD_mtx.give();
+		_delay_ms(250);
+	}
+}
+
+void Task5(){
+	LCD_mtx.take();
+	LCD_Initalize();
+	LCD_mtx.give();
+	uint8_t i=0;
+	while(1){
+		char temp[20];
+		sprintf(temp, "B Iter: %03d", i++);
+		LCD_mtx.take();
+		LCD_GoTo(0,0);
+		LCD_WriteText(temp);
+		LCD_mtx.give();
 		_delay_ms(250);
 	}
 }
@@ -50,6 +72,7 @@ int main() {
 	sys::taskCreate(&Task2, 0, 0x10);
 	sys::taskCreate(&Task3, 0, 0x10);
 	sys::taskCreate(&Task4, 0, 0x50);
+	sys::taskCreate(&Task5, 0, 0x50);
 
 
 	// TP ONLY END
