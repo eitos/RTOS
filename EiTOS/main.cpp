@@ -50,10 +50,10 @@ void Task4(){
 		LCD_WriteText(temp);
 		LCD_mtx.give();
 		
-		//serialMutex.take();
+		serialMutex.take();
 		serial.printf(temp);
 		serial.printf("\r\n");
-		//serialMutex.give();
+		serialMutex.give();
 		
 		_delay_ms(250);
 	}
