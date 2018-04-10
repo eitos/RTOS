@@ -4,11 +4,16 @@
 
 #include "OS.hpp"
 
+#include "../drivers/serial.hpp"
+
+Serial serial;
+
 extern "C" {
 	#include "HD44780.h"
 };
 
 mutex LCD_mtx;
+mutex serialMutex;
 
 void Task1() {
 	while (1) {
@@ -39,10 +44,17 @@ void Task4(){
 	while(1){
 		char temp[20];
 		sprintf(temp, "A Iter: %03d", i++);
+		
 		LCD_mtx.take();
 		LCD_GoTo(0,1);
 		LCD_WriteText(temp);
 		LCD_mtx.give();
+		
+		//serialMutex.take();
+		serial.printf(temp);
+		serial.printf("\r\n");
+		//serialMutex.give();
+		
 		_delay_ms(250);
 	}
 }
@@ -55,10 +67,17 @@ void Task5(){
 	while(1){
 		char temp[20];
 		sprintf(temp, "B Iter: %03d", i++);
+		
 		LCD_mtx.take();
 		LCD_GoTo(0,0);
 		LCD_WriteText(temp);
 		LCD_mtx.give();
+		
+		serialMutex.take();
+		serial.printf(temp);
+		serial.printf("\r\n");
+		serialMutex.give();
+		
 		_delay_ms(250);
 	}
 }
@@ -67,6 +86,8 @@ int main() {
 	// TP ONLY BEGIN
 	DDRB = (1 << PB0)|(1 << PB1)|(1 << PB2)|(1 << PB3);
 	PORTB = 0;
+	serial.init(115200U);
+	serial.printf("START\n\r");
 
 	sys::taskCreate(&Task1, 0, 0x10);
 	sys::taskCreate(&Task2, 0, 0x10);
